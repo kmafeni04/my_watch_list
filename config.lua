@@ -16,6 +16,6 @@ config("production", {
   code_cache = "on",
   num_workers = "1",
   sqlite = {
-    database = "/data/app.sqlite",
+    database = "./db/app.sqlite",
   }
 })
