@@ -1,0 +1,89 @@
+:root {
+  --border-radius-extra-small: 0.5rem;
+  --border-radius-small: 1rem;
+}
+.height-max {
+  min-height: 100svh;
+}
+
+.width-max {
+  min-width: 100vw;
+}
+
+.padding-block-s {
+  padding-block: 2rem;
+}
+
+.fixed {
+  position: fixed;
+}
+
+.sticky {
+  position: sticky;
+}
+
+.gap-xs {
+  gap: 0.5rem;
+}
+
+.gap-s {
+  gap: 1rem;
+}
+
+.gap-m {
+  gap: 2rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-col-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.center-align {
+  align-items: center;
+}
+
+.center-justify {
+  justify-content: center;
+  justify-items: center;
+}
+
+.grid {
+  display: grid;
+}
+
+.grid-center {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+}
+
+.input {
+  background-color: transparent;
+  border: solid 1px var(--font-color);
+  border-radius: var(--border-radius-extra-small);
+  padding: 0.5rem 0.75rem;
+}
+
+.btn {
+  font-weight: 700;
+  transition: 0.2s;
+}
+
+.btn:hover,
+.btn:focus {
+  background-color: var(--font-color);
+  color: var(--font-color-inverse);
+}

@@ -1,0 +1,47 @@
+local lapis = require("lapis")
+---@class App
+local app = lapis.Application()
+app:enable("etlua")
+app.layout = require "views.layout"
+
+---@class Model
+local Shows = require("models.shows")
+
+local generic_controller = require("controllers/generic_controller")
+local shows_controller = require("controllers.shows_controller")
+local user_controller = require("controllers.user_controller")
+
+
+
+app:before_filter(function(self)
+  local protected_routes = {
+    [self:url_for("index")] = true,
+    [self:url_for("login")] = true,
+    [self:url_for("signup")] = true,
+    [self:url_for("search")] = true,
+    ["/proxy"] = true,
+    ["/favicon.ico"] = true,
+  }
+  if not self.session.current_user and not protected_routes[self.req.parsed_url.path] then
+    return self:write({ redirect_to = self:url_for("login") })
+  end
+end)
+
+app:get("index", "/", generic_controller.root)
+
+app:get("login", "/login", user_controller.login)
+app:post("login", "/login", user_controller.login_post)
+
+app:get("signup", "/signup", user_controller.signup)
+app:post("signup", "/signup", user_controller.signup_post)
+
+app:post("logout", "/logout", user_controller.logout)
+
+app:get("shows", "/shows", shows_controller.shows)
+
+app:get("search", "/search", shows_controller.search)
+
+app:post("show", "/show/:id", shows_controller.show_post)
+app:delete("show", "/show/:id", shows_controller.show_delete)
+
+return app

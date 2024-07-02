@@ -1,0 +1,34 @@
+<h1>Search List</h1>
+<form class="flex-center gap-xs" action="<%= url_for("search") %>" method="get">
+  <label for="search">Search:</label>
+  <input
+    class="input"
+    id="search"
+    type="search"
+    name="query"
+    required
+    value="<%= params.query or "" %>"
+  >
+  <button class="btn input">search</button>
+</form>
+<% if type(shows) == "table" then %>
+  <% if #shows ~= 0 then %>
+    <div class="shows flex-col-center gap-m">
+      <% for key, _ in pairs(shows) do %>
+        <% show = shows[key].show %>
+        <% show_list_button = string.format([[
+          <button hx-post="/show/%s" class="btn input" hx-push-url="true" hx-target="body" hx-indicator="#adding-indicator">
+            Add to list
+          </button>
+          <p id="adding-indicator" class="htmx-indicator">Adding...</p>
+        ]], show.id)%>
+        <% render("views.partials.show_list", {show = show, show_list_button = show_list_button}) %>
+      <% end %>
+    </div>
+  <% else %>
+    <h4>Nothing found</h4>
+  <% end %>
+<% else %>
+  <h4>Network Issues</h4>
+  <p>Refresh the page</p>
+<% end %>

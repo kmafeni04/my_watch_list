@@ -1,0 +1,7 @@
+<h1>My Watch List</h1>
+<p>Manage What you're watching</p>
+<form class="flex-center gap-xs" action="<%= url_for("search") %>" method="get">
+  <label for="search">Search:</label>
+  <input class="input" id="search" type="search" name="query">
+  <button class="input btn">Search</button>
+</form>

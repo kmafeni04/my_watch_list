@@ -1,0 +1,64 @@
+<div class="show flex-center gap-s">
+  <% if type(show.image) == "table" and type(show.image.original) == "string" then %>
+    <img
+      class="show__image"
+      src="<%= show.image.original %>"
+      alt="Image for <%= show.name %>"
+    >
+  <% else %>
+    <p class="show__image flex-col-center">No image provided</p>
+  <% end %>
+  <div class="show__info grid gap-xs">
+    <h2><%= show.name %></h2>
+    <p>
+      Rating:
+      <% if type(show.rating.average) == "number" then %>
+        <%= show.rating.average %>/10
+      <% else %>
+        N/A
+      <% end %>
+    </p>
+    <p>Genres:
+      <% if #show.genres ~= 0 then %>
+        <%= table.concat(show.genres, " | ") %>
+      <% else %>
+        N/A
+      <% end %>
+    </p>
+    <p>
+      Language:
+      <% if type(show.language) == "string" then %>
+        <%= show.language %>
+      <% else %>
+        N/A
+      <% end %>
+    </p>
+    <p>
+      Premiered:
+      <% if type(show.premiered) == "string" then %>
+        <%= show.premiered %>
+      <% else %>
+        N/A
+      <% end %>
+
+    </p>
+    <p>Status:
+      <%= show.status %>
+    </p>
+    <p>Official Site:
+      <% if type(show.network) == "table" and type(show.officialSite) == "string" then %>
+        <a href="<%= show.officialSite %>" target="_blank">
+          <%= show.network.name %>
+        </a>
+      <% else %>
+        N/A
+      <% end %>
+    </p>
+    <% if type(show.summary) == "string" then %>
+      <%- show.summary %>
+    <% else %>
+      No summary Available
+    <% end %>
+    <%- show_list_button %>
+  </div>
+</div>

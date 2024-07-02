@@ -1,0 +1,19 @@
+.shows {
+  margin-block: 2rem;
+  width: 70%;
+}
+
+.show {
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.show > * {
+  height: max-content;
+  width: min(400px, 70vw);
+}
+
+.show__image {
+  aspect-ratio: 4/6;
+  border-radius: var(--border-radius-small);
+}

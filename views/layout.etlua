@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title><%= Page_title or "My Watch List" %></title>
+    <link rel="stylesheet" href="/static/css/reset.css"/>
+    <link rel="stylesheet" href="/static/css/utility.css">
+    <link rel="stylesheet" href="/static/css/shows.css">
+    <script src="/static/js/htmx(1.9.12).js"></script>
+  </head>
+  <body>
+    <nav class="top-nav fixed flex-center gap-xs">
+      <a href="<%= url_for("index")%>">Home</a>
+      <% if session.current_user then %>
+        <a href="<%= url_for("shows") %>">My List</a>
+        <button hx-post="<%= url_for("logout") %>" hx-target="body" class="input btn">Logout</button>
+      <% else %>
+        <a href="<%= url_for("login") %>">Login</a>
+        <a href="<%= url_for("signup") %>">Signup</a>
+      <% end %>
+    </nav>
+    <main class="flex-col-center gap-xs height-max padding-block-s">
+      <% content_for("inner") %>
+    </main>
+  </body>
+</html>
