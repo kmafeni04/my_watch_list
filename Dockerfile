@@ -5,8 +5,6 @@ WORKDIR /app
 
 ARG OPENSSL_DIR="/usr/local/openresty/openssl"
 
-VOLUME /var/data
-
 RUN apt-get update
 RUN apt-get install -y sqlite3 \
  libssl-dev \
@@ -19,14 +17,12 @@ RUN luarocks install lapis
 RUN luarocks install etlua 
 RUN luarocks install lsqlite3
 RUN luarocks install tableshape
-RUN luarocks install lua-resty-http
-RUN luarocks install lua-resty-openssl
+# RUN luarocks install lua-resty-http
+# RUN luarocks install lua-resty-openssl
 
 COPY . .
 
 RUN chmod a+rw /app /app/*
-RUN mkdir /var/data/
-RUN chmod a+rw /var/data
 
 RUN lapis migrate production --trace
 
