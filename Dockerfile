@@ -23,7 +23,7 @@ RUN luarocks install tableshape
 COPY . .
 
 RUN mkdir /data
-RUN chmod a+rw /data /data/*
+RUN chmod a+rw /data 
 RUN chmod a+rw /app /app/*
 
 RUN lapis migrate production --trace
