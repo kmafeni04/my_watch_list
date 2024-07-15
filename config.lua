@@ -1,6 +1,5 @@
 ---@type Config
 local config = require("lapis.config")
-config.get()
 
 config({ "development", "production" }, {
   server = "nginx",
