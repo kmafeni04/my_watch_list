@@ -1,9 +1,12 @@
-
 FROM openresty/openresty:jammy
 
 WORKDIR /app
 
-ARG OPENSSL_DIR="/usr/local/openresty/openssl"
+ARG PGHOST
+ARG PGPORT
+ARG PGUSER
+ARG PGDATABASE
+ARG PGPASSWORD
 
 RUN apt-get update
 RUN apt-get install -y sqlite3 \
@@ -21,8 +24,6 @@ RUN luarocks install tableshape
 # RUN luarocks install lua-resty-openssl
 
 COPY . .
-
-RUN chmod a+rw /app /app/*
 
 RUN lapis migrate production --trace
 

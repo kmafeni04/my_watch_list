@@ -1,6 +1,6 @@
----@class Db
+---@type Db
 local db = require("lapis.db")
----@class Schema
+---@type Schema
 local schema = require("lapis.db.schema")
 local types = schema.types
 
@@ -27,10 +27,12 @@ return {
 
     schema.create_index("shows", "show_id", { unique = true })
 
-    db.insert("users", {
-      username = "kmafeni04",
-      email = "test@gmail.com",
-      password = "aPassword*"
-    })
+    if os.getenv("LAPIS_ENVIRONMENT") == "development" then
+      db.insert("users", {
+        username = "testuser",
+        email = "test@test.com",
+        password = "testpassword"
+      })
+    end
   end
 }

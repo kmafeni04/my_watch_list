@@ -1,4 +1,6 @@
+---@type Config
 local config = require("lapis.config")
+config.get()
 
 config({ "development", "production" }, {
   server = "nginx",
@@ -6,16 +8,20 @@ config({ "development", "production" }, {
 
 config("development", {
   code_cache = "off",
-  num_workers = "4",
+  num_workers = "1",
   sqlite = {
     database = "app.sqlite",
-  }
+  },
 })
 
 config("production", {
   code_cache = "on",
-  num_workers = "1",
-  sqlite = {
-    database = "db/app.sqlite",
+  num_workers = "auto",
+  postgres = {
+    host = os.getenv("PGHOST"),
+    port = os.getenv("PGPORT"),
+    user = os.getenv("PGUSER"),
+    password = os.getenv("PGPASSWORD"),
+    database = os.getenv("PGDATABASE"),
   }
 })

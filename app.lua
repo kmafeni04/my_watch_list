@@ -1,17 +1,12 @@
 local lapis = require("lapis")
----@class App
+---@type App
 local app = lapis.Application()
 app:enable("etlua")
 app.layout = require "views.layout"
 
----@class Model
-local Shows = require("models.shows")
-
-local generic_controller = require("controllers/generic_controller")
+local generic_controller = require("controllers.generic_controller")
 local shows_controller = require("controllers.shows_controller")
 local user_controller = require("controllers.user_controller")
-
-
 
 app:before_filter(function(self)
   local protected_routes = {
@@ -37,9 +32,9 @@ app:post("signup", "/signup", user_controller.signup_post)
 
 app:post("logout", "/logout", user_controller.logout)
 
-app:get("shows", "/shows", shows_controller.shows)
-
 app:get("search", "/search", shows_controller.search)
+
+app:get("shows", "/shows", shows_controller.shows)
 
 app:post("show", "/show/:id", shows_controller.show_post)
 app:delete("show", "/show/:id", shows_controller.show_delete)

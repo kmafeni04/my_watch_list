@@ -1,7 +1,14 @@
 <h1>My Watch List</h1>
 <p>Manage What you're watching</p>
-<form class="flex-center gap-xs" action="<%= url_for("search") %>" method="get">
+<form
+  class="flex-center gap-xs"
+  hx-get="<%= url_for("search") %>"
+  hx-target="body"
+  hx-push-url="true"
+  hx-indicator="#searching-indicator"
+>
   <label for="search">Search:</label>
-  <input class="input" id="search" type="search" name="query">
+  <input class="input" id="search" type="search" name="query" required>
   <button class="input btn">Search</button>
 </form>
+<p id="searching-indicator" class="htmx-indicator">Searching...</p>

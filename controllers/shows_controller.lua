@@ -2,15 +2,12 @@
 local db = require("lapis.db")
 local json_handler = require("misc.json_handler")
 
----@class Model
 local Shows = require("models.shows")
 
----@class Model
 local Users = require("models.users")
 
 return {
   shows = function(self)
-    ---@class Model
     local user = Users:find({
       username = self.session.current_user
     })
@@ -28,7 +25,6 @@ return {
     return { render = "shows.search" }
   end,
   show_post = function(self)
-    ---@class Model
     local user = Users:find({
       username = self.session.current_user
     })
@@ -39,7 +35,6 @@ return {
     return { redirect_to = self:url_for("shows") }
   end,
   show_delete = function(self)
-    ---@class Model
     local show = Shows:find({
       show_id = self.params.id
     })
