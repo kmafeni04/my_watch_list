@@ -7,7 +7,7 @@ local types = schema.types
 return {
   [1] = function()
     schema.create_table("users", {
-      { "id",       types.integer },
+      { "id",       (types.serial or types.integer) },
       { "username", types.text },
       { "email",    types.text },
       { "password", types.text },
@@ -18,7 +18,7 @@ return {
     schema.create_index("users", "username", "email", { unique = true })
 
     schema.create_table("shows", {
-      { "id",      types.integer },
+      { "id",      (types.serial or types.integer) },
       { "show_id", types.integer },
       { "user_id", types.integer },
 
@@ -27,12 +27,10 @@ return {
 
     schema.create_index("shows", "show_id", { unique = true })
 
-    if os.getenv("LAPIS_ENVIRONMENT") == "development" then
-      db.insert("users", {
-        username = "testuser",
-        email = "test@test.com",
-        password = "testpassword"
-      })
-    end
-  end
+    db.insert("users", {
+      username = "testuser",
+      email = "test@test.com",
+      password = "testpassword"
+    })
+  end,
 }
