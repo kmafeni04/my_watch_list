@@ -4,6 +4,7 @@ local app = lapis.Application()
 app:enable("etlua")
 app.layout = require "views.layout"
 
+
 local generic_controller = require("controllers.generic_controller")
 local shows_controller = require("controllers.shows_controller")
 local user_controller = require("controllers.user_controller")
@@ -29,6 +30,12 @@ app:post("login", "/login", user_controller.login_post)
 
 app:get("signup", "/signup", user_controller.signup)
 app:post("signup", "/signup", user_controller.signup_post)
+
+app:get("settings", "/settings", user_controller.settings)
+app:post("settings", "/settings", user_controller.settings_general)
+app:put("change_password", "/change_password", user_controller.settings_password)
+
+app:delete("delete_account", "/delete_account", user_controller.delete_account)
 
 app:post("logout", "/logout", user_controller.logout)
 
