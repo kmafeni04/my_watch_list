@@ -65,17 +65,22 @@ return {
   end,
   settings_general = function(self)
     self.general_errors = {}
-    local user = Users:find({
+    local user_username = Users:find({
       username = self.params.username,
-      email = self.params.email
+    })
+    local user_email = Users:find({
+      email = self.params.email,
     })
 
-    if next(user) then
-      table.insert(self.general_errors, "This user already exists")
+    if user_username and next(user_username) and user_username.username ~= self.params.username then
+      table.insert(self.general_errors, "This username already exists")
+    end
+    if user_email and next(user_email) and user_email.email ~= self.params.email then
+      table.insert(self.general_errors, "This email already exists")
     end
 
-    ---@TODO Fix User Login
-    self.user = Users:find({ username = self.session.current_user })
+    local user = Users:find({ username = self.session.current_user })
+    self.user = user
 
     if #self.general_errors == 0 then
       user:update({
@@ -108,7 +113,7 @@ return {
       user:update({
         password = self.params.new_password
       })
-      return { render = "settings" }
+      return { redirect_to = self:url_for("settings"), status = 301 }
     else
       return { render = "settings" }
     end
@@ -123,6 +128,6 @@ return {
     })
     user:delete()
     self.session.current_user = nil
-    return { render = "index" }
+    return self:write({ redirect_to = self:url_for("index") })
   end
 }

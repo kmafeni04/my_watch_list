@@ -21,7 +21,12 @@ return {
     return { render = "shows.index" }
   end,
   search = function(self)
-    self.shows = json_handler("https://api.tvmaze.com/search/shows?q=", self.params.query)
+    if not self.params.query then
+      self.params.query = ""
+      self.shows = {}
+    else
+      self.shows = json_handler("https://api.tvmaze.com/search/shows?q=", self.params.query)
+    end
     return { render = "shows.search" }
   end,
   show_post = function(self)

@@ -12,17 +12,33 @@
   method="post"
 >
   <label for="username">Username:</label>
-  <input class="input" id="username" type="text" name="username">
+  <input
+    class="input"
+    id="username"
+    type="text"
+    name="username"
+    minlength="5"
+    maxlength="15"
+  >
   <label for="email">Email:</label>
   <input class="input" id="email" type="email" name="email">
   <label for="password">Password:</label>
-  <input class="input" id="password" type="password" name="password">
+  <input
+    class="input"
+    id="password"
+    type="password"
+    name="password"
+    minlength="10"
+    maxlength="30"
+  >
   <label for="confirm_password">Confirm password:</label>
   <input
     class="input"
     id="confirm_password"
     type="password"
     name="confirm_password"
+    minlength="10"
+    maxlength="30"
   >
   <button class="input btn">Sign up</button>
   <p>Already have an account?

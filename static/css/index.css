@@ -1,0 +1,48 @@
+body {
+  background-color: var(--bg-color);
+}
+
+.top-nav {
+  padding-block: 1rem;
+  background-color: var(--bg-color);
+}
+
+.bottom-nav {
+  display: none;
+  bottom: 0;
+  padding-block: 1rem;
+  padding-inline: 2rem;
+  background-color: var(--bg-color);
+
+  & a {
+    text-decoration: none;
+  }
+  & .nf {
+    font-size: 1.5rem;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .top-nav {
+    display: none;
+  }
+  .bottom-nav {
+    display: flex;
+  }
+}
+
+.loading {
+  height: 0.2rem;
+  width: 100vw;
+  background-color: var(--font-color);
+  position: absolute;
+}
+
+.loading__desktop {
+  bottom: 0;
+}
+
+.loading__mobile {
+  top: 0;
+  left: 0;
+}

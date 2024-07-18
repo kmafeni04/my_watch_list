@@ -2,6 +2,15 @@
   --border-radius-extra-small: 0.5rem;
   --border-radius-small: 1rem;
 }
+
+.visible {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
+
 .height-max {
   min-height: 100svh;
 }
@@ -20,6 +29,10 @@
 
 .padding-block-s {
   padding-block: 2rem;
+}
+
+.padding-block-m {
+  padding-block: 4rem;
 }
 
 .fixed {
@@ -89,6 +102,10 @@
 .justify-end {
   justify-content: end;
   justify-items: end;
+}
+
+.justify-space-between {
+  justify-content: space-between;
 }
 
 .grid {

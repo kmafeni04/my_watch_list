@@ -6,13 +6,16 @@
     <title><%= Page_title or "My Watch List" %></title>
     <link rel="stylesheet" href="/static/css/reset.css"/>
     <link rel="stylesheet" href="/static/css/utility.css">
+    <link rel="stylesheet" href="/static/css/index.css"/>
     <link rel="stylesheet" href="/static/css/shows.css">
+    <link rel="stylesheet" href="https://www.nerdfonts.com/assets/css/webfont.css">
     <script src="/static/js/htmx(1.9.12).js"></script>
-    <script src="/static/js/Alpinejs(3.14.0).js"></script>
+    <script src="/static/js/Alpinejs(3.14.0).js" defer></script>
   </head>
   <body>
-    <nav class="top-nav fixed width-max flex align-center gap-xs" hx-boost="true">
+    <nav class="top-nav fixed width-max flex-center gap-xs" hx-boost="true">
       <a href="<%= url_for("index")%>" hx-indicator="#loading">Home</a>
+      <a href="<%= url_for("search") %>" hx-indicator="#loading">Search</a>
       <% if session.current_user then %>
         <a href="<%= url_for("shows") %>" hx-indicator="#loading">My List</a>
         <a href="<%= url_for("settings") %>" hx-indicator="#loading">Settings</a>
@@ -27,10 +30,35 @@
         <a href="<%= url_for("login") %>" hx-indicator="#loading">Login</a>
         <a href="<%= url_for("signup") %>" hx-indicator="#loading">Signup</a>
       <% end %>
-      <p class="htmx-indicator" id="loading">Loading...</p>
+      <div class="htmx-indicator loading loading__desktop " id="loading"></div>
     </nav>
-    <main class="flex-col-center gap-xs height-max padding-block-s">
+    <main class="flex-col-center gap-xs height-max padding-block-m">
       <% content_for("inner") %>
     </main>
   </body>
+  <nav
+    class="
+      bottom-nav fixed width-max flex align-center justify-space-between gap-xs
+    "
+    hx-boost="true"
+  >
+    <a href="<%= url_for("index")%>" hx-indicator="#loading" title="Home"><i class="nf nf-fa-home"></i></a>
+    <a href="<%= url_for("search") %>" hx-indicator="#loading" title="Search"><i class="nf nf-fa-magnifying_glass"></i></a>
+    <% if session.current_user then %>
+      <a href="<%= url_for("shows") %>" hx-indicator="#loading" title="My List"><i class="nf nf-fa-list"></i></a>
+      <a href="<%= url_for("settings") %>" hx-indicator="#loading" title="Settings"><i class="nf nf-fa-gear"></i></a>
+      <a
+        href=""
+        title="Logout"
+        hx-post="<%= url_for("logout") %>"
+        hx-target="body"
+        hx-push-url="true"
+        hx-indicator="#loading"
+      ><i class="nf nf-md-logout"></i></a>
+    <% else %>
+      <a href="<%= url_for("login") %>" hx-indicator="#loading" title="Login"><i class="nf nf-md-login"></i></a>
+      <a href="<%= url_for("signup") %>" hx-indicator="#loading" title="Sign Up"><i class="nf nf-fa-user_plus"></i></a>
+    <% end %>
+    <div class="htmx-indicator loading loading__mobile" id="loading"></div>
+  </nav>
 </html>

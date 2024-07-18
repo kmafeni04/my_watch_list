@@ -1,18 +1,23 @@
 :root {
-  --clr-dark-800: black;
-  --clr-light-800: white;
+  --clr-dark-900: black;
+  --clr-light-900: white;
+
+  --bg-color-dark: rgb(30, 30, 30);
+  --bg-color-light: white;
 }
 
 @media (prefers-color-scheme: light) {
   :root {
-    --font-color: var(--clr-dark-800);
-    --font-color-inverse: var(--clr-light-800);
+    --font-color: var(--clr-dark-900);
+    --font-color-inverse: var(--clr-light-900);
+    --bg-color: var(--bg-color-light);
   }
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --font-color: var(--clr-light-800);
-    --font-color-inverse: var(--clr-dark-800);
+    --font-color: var(--clr-light-900);
+    --font-color-inverse: var(--clr-dark-900);
+    --bg-color: var(--bg-color-dark);
   }
 }
 
