@@ -13,6 +13,6 @@
     </div>
   <% else %>
     <h2>No shows in your list</h2>
-    <a href="<%= url_for("search") %>" hx-boost="true" hx-indicator="#loading">Search and add some</a>
+    <a href="<%= url_for("search") %>" hx-indicator="#loading">Search and add some</a>
   <% end %>
 <% end %>

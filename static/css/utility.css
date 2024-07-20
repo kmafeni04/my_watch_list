@@ -55,6 +55,10 @@
   gap: 2rem;
 }
 
+.gap-l {
+  gap: 4rem;
+}
+
 .flex {
   display: flex;
 }

@@ -1,0 +1,16 @@
+.landing {
+  padding-inline: 10rem;
+}
+
+.landing__title {
+  font-size: 3rem;
+}
+.landing__paragraph {
+  color: color-mix(in srgb, var(--font-color-inverse) 30%, var(--font-color));
+}
+
+.landing__btn {
+  width: 30%;
+  padding: 1rem;
+  font-size: 1rem;
+}

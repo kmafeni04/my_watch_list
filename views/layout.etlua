@@ -7,31 +7,42 @@
     <link rel="stylesheet" href="/static/css/reset.css"/>
     <link rel="stylesheet" href="/static/css/utility.css">
     <link rel="stylesheet" href="/static/css/index.css"/>
+    <link rel="stylesheet" href="/static/css/landing.css"/>
     <link rel="stylesheet" href="/static/css/shows.css">
     <link rel="stylesheet" href="https://www.nerdfonts.com/assets/css/webfont.css">
     <script src="/static/js/htmx(1.9.12).js"></script>
     <script src="/static/js/Alpinejs(3.14.0).js" defer></script>
   </head>
-  <body>
-    <nav class="top-nav fixed width-max flex-center gap-xs" hx-boost="true">
-      <a href="<%= url_for("index")%>" hx-indicator="#loading">Home</a>
-      <a href="<%= url_for("search") %>" hx-indicator="#loading">Search</a>
-      <% if session.current_user then %>
-        <a href="<%= url_for("shows") %>" hx-indicator="#loading">My List</a>
-        <a href="<%= url_for("settings") %>" hx-indicator="#loading">Settings</a>
-        <button
-          hx-post="<%= url_for("logout") %>"
-          hx-target="body"
-          hx-push-url="true"
-          hx-indicator="#loading"
-          class="input btn"
-        >Logout</button>
-      <% else %>
-        <a href="<%= url_for("login") %>" hx-indicator="#loading">Login</a>
-        <a href="<%= url_for("signup") %>" hx-indicator="#loading">Signup</a>
-      <% end %>
-      <div class="htmx-indicator loading loading__desktop " id="loading"></div>
+  <body hx-boost="true">
+    <nav class="top-nav fixed width-max flex">
+      <div class="top-nav__item width-100">
+        <a href="<%= url_for("index") %>">
+          <h2>My Watch List</h2>
+        </a>
+      </div>
+      <div class="top-nav__item flex-center gap-s width-100">
+        <a href="<%= url_for("search") %>" hx-indicator="#loading">Search</a>
+        <% if session.current_user then %>
+          <a href="<%= url_for("shows") %>" hx-indicator="#loading">My List</a>
+          <a href="<%= url_for("settings") %>" hx-indicator="#loading">Settings</a>
+        <% end %>
+      </div>
+      <div class="top-nav__item flex gap-s justify-end width-100">
+        <% if session.current_user then %>
+          <button
+            hx-post="<%= url_for("logout") %>"
+            hx-target="body"
+            hx-push-url="true"
+            hx-indicator="#loading"
+            class="input btn"
+          >Logout</button>
+        <% else %>
+          <a href="<%= url_for("login") %>" hx-indicator="#loading">Login</a>
+          <a href="<%= url_for("signup") %>" hx-indicator="#loading">Signup</a>
+        <% end %>
+      </div>
     </nav>
+    <div class="htmx-indicator loading loading__desktop " id="loading"></div>
     <main class="flex-col-center gap-xs height-max padding-block-m">
       <% content_for("inner") %>
     </main>
@@ -40,7 +51,6 @@
     class="
       bottom-nav fixed width-max flex align-center justify-space-between gap-xs
     "
-    hx-boost="true"
   >
     <a href="<%= url_for("index")%>" hx-indicator="#loading" title="Home"><i class="nf nf-fa-home"></i></a>
     <a href="<%= url_for("search") %>" hx-indicator="#loading" title="Search"><i class="nf nf-fa-magnifying_glass"></i></a>

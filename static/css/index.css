@@ -3,7 +3,7 @@ body {
 }
 
 .top-nav {
-  padding-block: 1rem;
+  padding: 1rem 5rem;
   background-color: var(--bg-color);
 }
 
@@ -35,11 +35,11 @@ body {
   height: 0.2rem;
   width: 100vw;
   background-color: var(--font-color);
-  position: absolute;
+  position: fixed;
 }
 
 .loading__desktop {
-  bottom: 0;
+  top: 0;
 }
 
 .loading__mobile {

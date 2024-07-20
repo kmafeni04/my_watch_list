@@ -1,3 +1,6 @@
+local json_handler = require("misc.json_handler")
+
+
 local lapis = require("lapis")
 ---@type App
 local app = lapis.Application()
@@ -20,6 +23,16 @@ app:before_filter(function(self)
   }
   if not self.session.current_user and not protected_routes[self.req.parsed_url.path] then
     return self:write({ redirect_to = self:url_for("login") })
+  end
+end)
+
+app:before_filter(function(self)
+  local protected_routes = {
+    [self:url_for("login")] = true,
+    [self:url_for("signup")] = true,
+  }
+  if self.session.current_user and protected_routes[self.req.parsed_url.path] then
+    self:write({ redirect_to = self:url_for("index") })
   end
 end)
 
