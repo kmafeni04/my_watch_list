@@ -20,8 +20,6 @@ RUN luarocks install lapis
 RUN luarocks install etlua 
 RUN luarocks install lsqlite3
 RUN luarocks install tableshape
-# RUN luarocks install lua-resty-http
-# RUN luarocks install lua-resty-openssl
 
 COPY . .
 
