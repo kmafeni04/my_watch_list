@@ -1,5 +1,12 @@
 <h1>Search List</h1>
-<form class="flex-center gap-xs" action="<%= url_for("search") %>" method="get">
+<% if params.query == "" then %>
+<form
+  class="flex-center gap-xs"
+  hx-get="<%= url_for("search") %>"
+  hx-indicator="#loading"
+  hx-push-url="true"
+  hx-target="body"
+>
   <label for="search">Search:</label>
   <input
     class="input"
@@ -11,6 +18,7 @@
   >
   <button class="btn input">search</button>
 </form>
+<% end %>
 <% if type(shows) == "table" then %>
   <% if #shows ~= 0 then %>
     <div class="shows flex-col-center gap-m">
@@ -25,10 +33,12 @@
         <% render("views.partials.show_list", {show = show, show_list_button = show_list_button}) %>
       <% end %>
     </div>
+    <% elseif params.query == "" then %>
+      <h4>Search Something</h4>
+    <% else %>
+      <h4>Nothing found</h4>
+    <% end %>
   <% else %>
-    <h4>Nothing found</h4>
+    <h4>Network Issues</h4>
+    <p>Refresh the page</p>
   <% end %>
-<% else %>
-  <h4>Network Issues</h4>
-  <p>Refresh the page</p>
-<% end %>

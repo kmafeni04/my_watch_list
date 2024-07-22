@@ -2,16 +2,37 @@
   --border-radius-extra-small: 0.5rem;
   --border-radius-small: 1rem;
 }
+
+.visible {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
+
 .height-max {
   min-height: 100svh;
+}
+
+.height-100 {
+  height: 100%;
 }
 
 .width-max {
   min-width: 100vw;
 }
 
+.width-100 {
+  width: 100%;
+}
+
 .padding-block-s {
   padding-block: 2rem;
+}
+
+.padding-block-m {
+  padding-block: 4rem;
 }
 
 .fixed {
@@ -34,6 +55,10 @@
   gap: 2rem;
 }
 
+.gap-l {
+  gap: 4rem;
+}
+
 .flex {
   display: flex;
 }
@@ -44,6 +69,11 @@
   justify-content: center;
 }
 
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
 .flex-col-center {
   display: flex;
   flex-direction: column;
@@ -51,13 +81,35 @@
   justify-content: center;
 }
 
-.center-align {
+.align-center {
   align-items: center;
 }
 
-.center-justify {
+.align-start {
+  align-items: start;
+}
+
+.align-end {
+  align-items: end;
+}
+
+.justify-center {
   justify-content: center;
   justify-items: center;
+}
+
+.justify-start {
+  justify-content: start;
+  justify-items: start;
+}
+
+.justify-end {
+  justify-content: end;
+  justify-items: end;
+}
+
+.justify-space-between {
+  justify-content: space-between;
 }
 
 .grid {
@@ -86,4 +138,41 @@
 .btn:focus {
   background-color: var(--font-color);
   color: var(--font-color-inverse);
+}
+
+.btn-danger {
+  background-color: red;
+  color: white;
+  border: none;
+  font-weight: 700;
+  transition: 0.2s;
+}
+
+.btn-danger:hover,
+.btn-danger:focus {
+  box-shadow: 0 0 5px 1px red;
+}
+
+.htmx-indicator {
+  display: none;
+}
+.htmx-request .htmx-indicator {
+  display: inline;
+  animation: pulse 2s infinite;
+}
+.htmx-request.htmx-indicator {
+  display: inline;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
 }

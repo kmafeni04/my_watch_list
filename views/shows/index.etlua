@@ -11,8 +11,8 @@
         <% render("views.partials.show_list", {show = show, show_list_button = show_list_button}) %>
       <% end %>
     </div>
-    <% else %>
+  <% else %>
     <h2>No shows in your list</h2>
-    <a href="<%= url_for("index") %>">Search and add some</a>
+    <a href="<%= url_for("search") %>" hx-indicator="#loading">Search and add some</a>
   <% end %>
 <% end %>

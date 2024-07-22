@@ -1,14 +1,41 @@
-<h1>My Watch List</h1>
-<p>Manage What you're watching</p>
-<form
-  class="flex-center gap-xs"
-  hx-get="<%= url_for("search") %>"
-  hx-target="body"
-  hx-push-url="true"
-  hx-indicator="#searching-indicator"
->
-  <label for="search">Search:</label>
-  <input class="input" id="search" type="search" name="query" required>
-  <button class="input btn">Search</button>
-</form>
-<p id="searching-indicator" class="htmx-indicator">Searching...</p>
+<div class="landing flex-center gap-l width-max">
+
+  <div class="landing__half flex-col gap-xs width-100">
+    <h1 class="landing__title">My Watch List</h1>
+    <p class="landing__paragraph">
+      Stay on top of what you're watching! Manage your favorite shows and never
+      lose track of your must-sees!
+    </p>
+    <% if not session.current_user then %>
+      <button
+        class="input btn landing__btn flex-center gap-xs"
+        hx-get="<%= url_for("signup") %>"
+        hx-target="body"
+        hx-indicator="#loading"
+        hx-push-url="true"
+      >
+        Get Started
+        <i class="nf nf-weather-direction_right"></i>
+      </button>
+      <a href="<%= url_for("search") %>" hx-indicator="#loading">Want to try out the search first?</a>
+    <% else %>
+      <button
+        class="input btn landing__btn flex-center gap-xs"
+        hx-get="<%= url_for("search") %>"
+        hx-target="body"
+        hx-indicator="#loading"
+        hx-push-url="true"
+      >
+        Go searching
+        <i class="nf nf-weather-direction_right"></i>
+      </button>
+    <% end %>
+  </div>
+
+  <div class="landing__half width-100">
+    <div class="landing__images flex">
+      <img src="static/assets/landing-image.png" class="landing__image">
+    </div>
+  </div>
+
+</div>

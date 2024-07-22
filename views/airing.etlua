@@ -1,0 +1,27 @@
+<h1>Top 5 Airing
+  <%= time %></h1>
+<form action="<%= url_for("airing") %>" hx-indicator="#loading" class="flex-center gap-xs">
+<label for="date">Date:</label>
+  <input
+  name="date"
+  type="date"
+  id="date"
+  class="input"
+  value="<%= time %>">
+  <button class="input btn">Sort</button>
+  
+</form>
+<% if type(shows) == "table" then %>
+  <div class="popular-shows flex-col-center gap-m">
+    <% for key, value in pairs(shows) do %>
+      <% show = shows[key] %>
+        <% show_list_button = string.format([[
+          <button hx-post="/show/%s" class="btn input" hx-push-url="true" hx-target="body" hx-indicator="#adding-indicator">
+            Add to list
+          </button>
+          <p id="adding-indicator" class="htmx-indicator">Adding...</p>
+        ]], show.id)%>
+        <% render("views.partials.show_list", {show = show, show_list_button = show_list_button}) %>
+    <% end %>
+  </div>
+<% end %>
