@@ -10,6 +10,8 @@
   class="user-form grid gap-xs"
   action="<%= url_for("signup") %>"
   method="post"
+  hx-indicator="#loading"
+  x-data="{ viewable: false }"
 >
   <label for="username">Username:</label>
   <input
@@ -26,7 +28,7 @@
   <input
     class="input"
     id="password"
-    type="password"
+    :type="!viewable ? 'password' : 'text'"
     name="password"
     minlength="10"
     maxlength="30"
@@ -35,13 +37,17 @@
   <input
     class="input"
     id="confirm_password"
-    type="password"
+    :type="!viewable ? 'password' : 'text'"
     name="confirm_password"
     minlength="10"
     maxlength="30"
   >
+  <div class="show-password">
+    <label for="show-password">Show password:</label>
+    <input type="checkbox" autocomplete="off" @click="viewable = !viewable">
+  </div>
   <button class="input btn">Sign up</button>
   <p>Already have an account?
-    <a href="<%= url_for("login") %>">Login</a>
+    <a href="<%= url_for("login") %>" hx-indicator="#loading">Login</a>
   </p>
 </form>

@@ -6,6 +6,7 @@ local Shows = require("models.shows")
 
 local Users = require("models.users")
 
+---@type ControllerTable
 return {
   shows = function(self)
     local user = Users:find({
@@ -51,5 +52,33 @@ return {
     end
     -- return { redirect_to = self:url_for("shows") }
     return { render = "shows.index" }
+  end,
+  airing = function(self)
+    if self.params.date then
+      self.time = self.params.date
+    else
+      self.time = os.date("%Y-%m-%d")
+    end
+    local shows_unsorted = json_handler("https://api.tvmaze.com/schedule?date=", self.time)
+    table.sort(shows_unsorted, function(a, b)
+      if type(a.show.rating.average) == "userdata" then
+        a.show.rating.average = 0
+      end
+      if type(b.show.rating.average) == "userdata" then
+        b.show.rating.average = 0
+      end
+      return a.show.rating.average > b.show.rating.average
+    end)
+    self.shows = {}
+    local counter = 0
+    for key, _ in pairs(shows_unsorted) do
+      local show = shows_unsorted[key].show
+      table.insert(self.shows, show)
+      counter = counter + 1
+      if counter == 5 then
+        break
+      end
+    end
+    return { render = "airing" }
   end
 }

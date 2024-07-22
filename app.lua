@@ -1,12 +1,8 @@
-local json_handler = require("misc.json_handler")
-
-
 local lapis = require("lapis")
 ---@type App
 local app = lapis.Application()
 app:enable("etlua")
 app.layout = require "views.layout"
-
 
 local generic_controller = require("controllers.generic_controller")
 local shows_controller = require("controllers.shows_controller")
@@ -18,11 +14,12 @@ app:before_filter(function(self)
     [self:url_for("login")] = true,
     [self:url_for("signup")] = true,
     [self:url_for("search")] = true,
+    [self:url_for("airing")] = true,
     ["/proxy"] = true,
     ["/favicon.ico"] = true,
   }
   if not self.session.current_user and not protected_routes[self.req.parsed_url.path] then
-    return self:write({ redirect_to = self:url_for("login") })
+    self:write({ redirect_to = self:url_for("login") })
   end
 end)
 
@@ -58,5 +55,7 @@ app:get("shows", "/shows", shows_controller.shows)
 
 app:post("show", "/show/:id", shows_controller.show_post)
 app:delete("show", "/show/:id", shows_controller.show_delete)
+
+app:get("airing", "/airing", shows_controller.airing)
 
 return app

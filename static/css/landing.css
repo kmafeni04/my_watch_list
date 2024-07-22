@@ -1,5 +1,5 @@
 .landing {
-  padding-inline: 10rem;
+  padding-inline: 10vw;
 }
 
 .landing__title {
@@ -10,7 +10,17 @@
 }
 
 .landing__btn {
-  width: 30%;
+  width: fit-content;
   padding: 1rem;
   font-size: 1rem;
+}
+
+.landing__image {
+  border-radius: 1rem;
+}
+
+@media (max-width: 600px) {
+  .landing__half:last-child {
+    display: none;
+  }
 }

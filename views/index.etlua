@@ -1,10 +1,10 @@
-<div class="landing flex align-center gap-l width-max">
+<div class="landing flex-center gap-l width-max">
 
-  <div class="landing__half grid gap-s width-100">
+  <div class="landing__half flex-col gap-xs width-100">
     <h1 class="landing__title">My Watch List</h1>
     <p class="landing__paragraph">
-      Stay on top of what you're watching! Organize and manage your favorite
-      shows and never lose track of your must-sees!
+      Stay on top of what you're watching! Manage your favorite shows and never
+      lose track of your must-sees!
     </p>
     <% if not session.current_user then %>
       <button
@@ -33,7 +33,9 @@
   </div>
 
   <div class="landing__half width-100">
-    <h2>Supposed to be a cool image</h2>
+    <div class="landing__images flex">
+      <img src="static/assets/landing-image.png" class="landing__image">
+    </div>
   </div>
 
 </div>
