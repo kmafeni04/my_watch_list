@@ -8,6 +8,7 @@ config({ "development", "production" }, {
 config("development", {
   code_cache = "off",
   num_workers = "1",
+  port = 8080,
   sqlite = {
     database = "app.sqlite",
   },
@@ -16,6 +17,7 @@ config("development", {
 config("production", {
   code_cache = "on",
   num_workers = "auto",
+  port = 80,
   postgres = {
     host = os.getenv("PGHOST"),
     port = os.getenv("PGPORT"),

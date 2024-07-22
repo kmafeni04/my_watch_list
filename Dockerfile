@@ -27,7 +27,7 @@ COPY . .
 
 RUN lapis migrate production --trace
 
-EXPOSE 8080
+EXPOSE 80
 
 CMD ["lapis", "server", "production"]
 
