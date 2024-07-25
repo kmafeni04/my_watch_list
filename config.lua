@@ -24,5 +24,5 @@ config("production", {
     user = os.getenv("PGUSER"),
     password = os.getenv("PGPASSWORD"),
     database = os.getenv("PGDATABASE"),
-  }
+  },
 })

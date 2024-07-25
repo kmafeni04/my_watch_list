@@ -2,9 +2,9 @@
 local db = require("lapis.db")
 local json_handler = require("misc.json_handler")
 
-local Shows = require("models.shows")
-
 local Users = require("models.users")
+local Shows = require("models.shows")
+local Comments = require("models.comments")
 
 ---@type ControllerTable
 return {
@@ -30,6 +30,32 @@ return {
     end
     return { render = "shows.search" }
   end,
+  show = function(self)
+    self.show = json_handler("https://api.tvmaze.com/shows/", self.params.id)
+    self.comments = Comments:select(db.clause({
+      show_id = self.params.id
+    }))
+    table.sort(self.comments, function(a, b)
+      return a.id > b.id
+    end)
+    return { render = "shows.show" }
+  end,
+  comments_post = function(self)
+    Comments:create({
+      username = self.session.current_user,
+      date = os.date("%Y-%m-%d"),
+      likes = 0,
+      content = self.params.content,
+      show_id = self.params.show_id
+    })
+    return self:write({ redirect_to = self:url_for("show", { id = self.params.show_id }) })
+  end,
+  comment_delete = function(self)
+    local comment = Comments:find({
+      id = self.params.id
+    })
+    comment:delete()
+  end,
   show_post = function(self)
     local user = Users:find({
       username = self.session.current_user
@@ -50,8 +76,7 @@ return {
     for key, _ in pairs(shows) do
       table.insert(self.shows, json_handler("https://api.tvmaze.com/shows/", shows[key].show_id))
     end
-    -- return { redirect_to = self:url_for("shows") }
-    return { render = "shows.index" }
+    return { headers = { ["HX-Location"] = self:url_for("shows") } }
   end,
   airing = function(self)
     if self.params.date then

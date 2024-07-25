@@ -9,7 +9,7 @@
     <p class="show__image flex-col-center">No image provided</p>
   <% end %>
   <div class="show__info grid gap-xs">
-    <h2><%= show.name %></h2>
+    <a href="<%= url_for("show", { id = show.id }) %>" hx-indicator="#loading"><h2><%= show.name %></h2></a>
     <p>
       Rating:
       <% if type(show.rating.average) == "number" then %>
@@ -59,6 +59,15 @@
     <% else %>
       No summary Available
     <% end %>
-    <%- show_list_button %>
+    <% if show.id ~= show_id  then %>
+      <button
+        hx-<%= button_method %>="<%= button_url %>"
+        class="btn input"
+        hx-push-url="true"
+        hx-target="body"
+        hx-indicator="#show-indicator"
+      ><%= button_content %></button>
+      <p class="htmx-indicator" id="show-indicator"><%= button_indicator %></p>
+    <% end %>
   </div>
 </div>

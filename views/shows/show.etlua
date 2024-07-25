@@ -1,0 +1,2 @@
+<% render("views.partials.show_list", { show = show ,button_method = "post" , button_url = url_for("show", { id = show.id}), button_content = "Add to list", button_indicator = "Adding..." }) %>
+  <% render("views.partials.comment", { comments = comments}) %>

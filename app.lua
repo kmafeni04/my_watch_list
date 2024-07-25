@@ -53,8 +53,13 @@ app:get("search", "/search", shows_controller.search)
 
 app:get("shows", "/shows", shows_controller.shows)
 
+app:get("show", "/show/:id", shows_controller.show)
 app:post("show", "/show/:id", shows_controller.show_post)
 app:delete("show", "/show/:id", shows_controller.show_delete)
+
+app:post("comments", "/comments", shows_controller.comments_post)
+
+app:delete("comment", "/comment/:id", shows_controller.comment_delete)
 
 app:get("airing", "/airing", shows_controller.airing)
 

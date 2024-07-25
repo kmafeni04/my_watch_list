@@ -6,7 +6,7 @@
       hx-confirm="Are you sure you would like to make these changes?"
       hx-target="body"
       hx-push-url="true"
-      hx-indicator
+      hx-indicator="#loading"
       class="settings-form grid gap-s"
       x-data="{ editable: false, viewable: false }"
     >
@@ -53,7 +53,6 @@
         >Cancel</button>
         <button class="input btn width-100" x-show="editable">Submit</button>
       </div>
-      <p class="htmx-indicator">Updating...</p>
     </form>
     <button
       hx-delete="<%= url_for("delete_account") %>"
@@ -62,7 +61,6 @@
       hx-confirm="Are you sure you would like to delete your account?"
       class="input btn-danger width-100"
     >Delete Account</button>
-    <p class="htmx-indicator" id="delete">Deleting...</p>
   </div>
 
   <div
@@ -85,6 +83,7 @@
     <form
       hx-put="<%= url_for("change_password") %>"
       hx-target="body"
+      hx-indicator="#loading"
       x-show="editable"
       class="grid gap-s"
     >

@@ -1,13 +1,5 @@
-local function encrypt(string)
-  local bcrypt = require("bcrypt")
-  local log_rounds = 5
-  local digest = bcrypt.digest(string, log_rounds)
-  return digest
-end
-local function verify(string, digest)
-  local bcrypt = require("bcrypt")
-  return bcrypt.verify(string, digest)
-end
+local encrypt = require("misc.bcrypt").encrypt
+local verify = require("misc.bcrypt").verify
 local Users = require("models.users")
 
 ---@type ControllerTable
@@ -88,7 +80,7 @@ return {
         email = self.params.email,
       })
       self.session.current_user = self.params.username
-      return { redirect_to = self:url_for("settings") }
+      return { headers = { ["HX-Location"] = self:url_for("settings") } }
     else
       return { render = "settings" }
     end
@@ -113,7 +105,7 @@ return {
       user:update({
         password = self.params.new_password
       })
-      return { redirect_to = self:url_for("settings"), status = 301 }
+      return { headers = { ["HX-Location"] = self:url_for("settings") } }
     else
       return { render = "settings" }
     end
@@ -128,6 +120,6 @@ return {
     })
     user:delete()
     self.session.current_user = nil
-    return self:write({ redirect_to = self:url_for("index") })
+    return self:write({ headers = { ["HX-Location"] = self:url_for("index") } })
   end
 }
