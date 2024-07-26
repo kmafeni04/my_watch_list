@@ -48,7 +48,13 @@ return {
       content = self.params.content,
       show_id = self.params.show_id
     })
-    return self:write({ redirect_to = self:url_for("show", { id = self.params.show_id }) })
+    self.comments = Comments:select(db.clause({
+      show_id = self.params.show_id
+    }))
+    table.sort(self.comments, function(a, b)
+      return a.id > b.id
+    end)
+    return self:write({ render = "partials.comments", layout = false })
   end,
   comment_delete = function(self)
     local comment = Comments:find({

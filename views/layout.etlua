@@ -67,8 +67,8 @@
         <% end %>
       </div>
     </nav>
-    <div class="htmx-indicator loading loading__desktop " id="loading"></div>
-    <main class="flex-col-center height-100 gap-xs padding-block-m">
+    <div class="htmx-indicator loading loading__desktop" id="loading"></div>
+    <main class="flex-col-center gap-xs padding-block-m">
       <% content_for("inner") %>
     </main>
   </body>

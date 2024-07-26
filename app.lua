@@ -15,6 +15,7 @@ app:before_filter(function(self)
     [self:url_for("signup")] = true,
     [self:url_for("search")] = true,
     [self:url_for("airing")] = true,
+    [self:url_for("show", { id = self.params.id })] = true,
     ["/proxy"] = true,
     ["/favicon.ico"] = true,
   }

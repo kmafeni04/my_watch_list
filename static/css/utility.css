@@ -93,6 +93,14 @@
   align-items: end;
 }
 
+.align-self-start {
+  align-self: start;
+}
+
+.align-self-center {
+  align-self: center;
+}
+
 .justify-center {
   justify-content: center;
   justify-items: center;
