@@ -8,11 +8,15 @@ local generic_controller = require("controllers.generic_controller")
 local shows_controller = require("controllers.shows_controller")
 local user_controller = require("controllers.user_controller")
 
+-- User not logged in
 app:before_filter(function(self)
   local protected_routes = {
     [self:url_for("index")] = true,
     [self:url_for("login")] = true,
     [self:url_for("signup")] = true,
+    [self:url_for("forgot_password")] = true,
+    [self:url_for("password_reset_sent")] = true,
+    [self:url_for("password_reset")] = true,
     [self:url_for("search")] = true,
     [self:url_for("airing")] = true,
     [self:url_for("show", { id = self.params.id })] = true,
@@ -24,10 +28,12 @@ app:before_filter(function(self)
   end
 end)
 
+-- User logged in
 app:before_filter(function(self)
   local protected_routes = {
     [self:url_for("login")] = true,
     [self:url_for("signup")] = true,
+    [self:url_for("forgot_password")] = true,
   }
   if self.session.current_user and protected_routes[self.req.parsed_url.path] then
     self:write({ redirect_to = self:url_for("index") })
@@ -41,6 +47,12 @@ app:post("login", "/login", user_controller.login_post)
 
 app:get("signup", "/signup", user_controller.signup)
 app:post("signup", "/signup", user_controller.signup_post)
+
+app:get("forgot_password", "/forgot_password", user_controller.forgot_password)
+app:post("forgot_password", "/forgot_password", user_controller.forgot_password_post)
+app:post("password_reset_sent", "/password_reset_sent", user_controller.password_reset_sent)
+
+app:post("password_reset", "/password_reset", user_controller.password_reset)
 
 app:get("settings", "/settings", user_controller.settings)
 app:post("settings", "/settings", user_controller.settings_general)

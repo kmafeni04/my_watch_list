@@ -65,7 +65,7 @@
 
   <div
     class="settings__password grid justify-center gap-s"
-    x-data="{ editable: false }"
+    x-data="{ editable: false, viewable: false }"
   >
     <h2>Password</h2>
     <% if password_errors and next(password_errors) ~= nil then %>
@@ -89,7 +89,7 @@
     >
       <label for="current-password">Current Password:</label>
       <input
-        type="password"
+        :type="viewable ? 'text' : 'password'"
         name="current_password"
         id="current-password"
         class="input"
@@ -97,7 +97,7 @@
       >
       <label for="new-password">New Password:</label>
       <input
-        type="password"
+        :type="viewable ? 'text' : 'password'"
         name="new_password"
         id="new-password"
         class="input"
@@ -105,12 +105,21 @@
       >
       <label for="confirm-new-password">Confirm New Password:</label>
       <input
-        type="password"
+        :type="viewable ? 'text' : 'password'"
         name="confirm_new_password"
         id="confirm-new-password"
         class="input"
         required
       >
+      <div class="show-password">
+        <label for="show-password-check">Show Password</label>
+        <input
+          type="checkbox"
+          id="show-password-check"
+          @click="viewable = !viewable"
+          autocomplete="off"
+        >
+      </div>
       <div class="settings-form__buttons flex align-center gap-s">
         <button type="button" @click="editable = false" class="input btn width-100">Cancel</button>
         <button class="input btn width-100">Submit</button>

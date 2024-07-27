@@ -8,6 +8,9 @@ ARG PGUSER
 ARG PGDATABASE
 ARG PGPASSWORD
 
+ARG GMAIL_EMAIL
+ARG GMAIL_PASSWORD
+
 RUN apt-get update
 RUN apt-get install -y sqlite3 \
  libssl-dev \
