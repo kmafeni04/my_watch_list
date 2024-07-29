@@ -1,5 +1,6 @@
 local encrypt = require("misc.bcrypt").encrypt
 local verify = require("misc.bcrypt").verify
+local mailer = require("misc.mailer")
 local Users = require("models.users")
 
 ---@type ControllerTable
@@ -36,15 +37,35 @@ return {
       table.insert(self.errors, "This user already exists")
     end
     if #self.errors == 0 then
+      math.randomseed(os.time())
+      self.session.signup_code = math.random(1000, 9999)
+      mailer(
+        assert(os.getenv("GMAIL_EMAIL")),
+        assert(os.getenv("GMAIL_PASSWORD")),
+        string.format("Leonard Mafeni <%s>", assert(os.getenv("GMAIL_EMAIL"))), { self.params.email }, "Registration",
+        string.format([[
+          <p>Your Sign Up code is: </p>
+          <h1>%s</h1>
+        ]], self.session.signup_code))
+      return { render = "signup_code_sent" }
+    else
+      return { render = "signup" }
+    end
+  end,
+  signup_complete = function(self)
+    print(self.params.signup_code)
+    print(self.session.signup_code)
+    if tonumber(self.params.signup_code) == tonumber(self.session.signup_code) then
       Users:create({
         username = self.params.username,
         email = self.params.email,
-        password = encrypt(self.params.password),
+        password = self.params.password,
       })
       self.session.current_user = self.params.username
-      return { redirect_to = self:url_for("index") }
+      self.session.signup_code = nil
+      return self:write({ redirect_to = self:url_for("index") })
     else
-      return { render = "signup" }
+      return self:write({ render = "signup_code_sent" })
     end
   end,
   forgot_password = function(self)
@@ -60,35 +81,16 @@ return {
       self.session.reset_email = self.params.email
       math.randomseed(os.time())
       self.session.reset_code = math.random(1000, 9999)
-      local mail = require "resty.mail"
-
-      local mailer, new_err = mail.new({
-        host = "smtp.gmail.com",
-        port = 587,
-        starttls = true,
-        username = os.getenv("GMAIL_EMAIL"),
-        password = os.getenv("GMAIL_PASSWORD"),
-      })
-      if new_err then
-        ngx.log(ngx.ERR, "mail.new error: ", new_err)
-        return ngx.exit(ngx.HTTP_INTERNAL_SERVER_ERROR)
-      end
-
-      local _, send_err = mailer:send({
-        from = string.format("Leonard Mafeni <%s>", os.getenv("GMAIL_EMAIL")),
-        to = { self.params.email },
-        subject = "Password Reset",
-        html = string.format([[
-            <p>Do not reply this email</p>
-            <p>Your reset code is:</p>
+      mailer(
+        assert(os.getenv("GMAIL_EMAIL")),
+        assert(os.getenv("GMAIL_PASSWORD")),
+        string.format("leonard mafeni <%s>", assert(os.getenv("GMAIL_EMAIL"))), { self.params.email }, "Password Reset",
+        string.format([[
+            <p>do not reply this email</p>
+            <p>your reset code is:</p>
             <h2>%s</h2>
-            <p>If you did not request to reset, kindly ignore this and nothing will be changed</p>
-          ]], self.session.reset_code)
-      })
-      if send_err then
-        ngx.log(ngx.ERR, "mailer:send error: ", new_err)
-        return ngx.exit(ngx.HTTP_INTERNAL_SERVER_ERROR)
-      end
+            <p>if you did not request to reset, kindly ignore this and nothing will be changed</p>
+          ]], self.session.reset_code))
       return self:write({ render = "password_reset_sent" })
     end
   end,

@@ -1,7 +1,6 @@
+---@type ControllerTable
 return {
-  ---@type ActionFn
   root = function(self)
-    ---@type AppRenderOptions
-    return { render = true }
+    return self:write({ render = true })
   end,
 }

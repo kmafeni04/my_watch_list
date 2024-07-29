@@ -14,6 +14,7 @@ app:before_filter(function(self)
     [self:url_for("index")] = true,
     [self:url_for("login")] = true,
     [self:url_for("signup")] = true,
+    [self:url_for("signup_complete")] = true,
     [self:url_for("forgot_password")] = true,
     [self:url_for("password_reset_sent")] = true,
     [self:url_for("password_reset")] = true,
@@ -47,6 +48,7 @@ app:post("login", "/login", user_controller.login_post)
 
 app:get("signup", "/signup", user_controller.signup)
 app:post("signup", "/signup", user_controller.signup_post)
+app:post("signup_complete", "/signup_complete", user_controller.signup_complete)
 
 app:get("forgot_password", "/forgot_password", user_controller.forgot_password)
 app:post("forgot_password", "/forgot_password", user_controller.forgot_password_post)
