@@ -15,7 +15,7 @@
         hx-push-url="true"
       >
         Get Started
-        <i class="nf nf-weather-direction_right"></i>
+        <i class="nf nf-cod-triangle_right"></i>
       </button>
       <a href="<%= url_for("search") %>" hx-indicator="#loading">Want to try out the search first?</a>
     <% else %>
@@ -27,14 +27,14 @@
         hx-push-url="true"
       >
         Go searching
-        <i class="nf nf-weather-direction_right"></i>
+        <i class="nf nf-cod-triangle_right"></i>
       </button>
     <% end %>
   </div>
 
   <div class="landing__half width-100">
     <div class="landing__images flex">
-      <img src="static/assets/landing-image.png" class="landing__image">
+      <img src="/static/assets/landing-image.png" class="landing__image">
     </div>
   </div>
 </div>

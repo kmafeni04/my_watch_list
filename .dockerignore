@@ -2,4 +2,5 @@ logs/
 nginx.conf.compiled
 *.sqlite
 *_temp/
+types/
 .git
