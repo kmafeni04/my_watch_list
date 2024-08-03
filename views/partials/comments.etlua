@@ -1,0 +1,35 @@
+<div class="comments grid-center gap-m" id="comments">
+  <p class="htmx-indicator" id="commenting">Commenting...</p>
+  <% if type(comments) == "table" and next(comments) ~= nil then %>
+    <% for _, comment in pairs(comments) do %>
+      <div class="comment grid align-start gap-xs">
+        <div class="comment__header flex-center gap-xs">
+          <h3><%= comment.username %></h3>
+          <p>on
+            <span><%= comment.date %></span></p>
+          <div
+            id="comment-likes"
+            class="likes flex-center gap-xs"
+            hx-get="<%= url_for('comment_likes_load', { id = comment.id }) %>"
+            hx-trigger="load"
+          >
+          </div>
+        </div>
+        <pre><%= comment.content %></pre>
+        <% if comment.username == session.current_user then %>
+          <button
+            hx-delete="<%= url_for("comment", { id = comment.id }) %>"
+            hx-swap="delete"
+            hx-target="closest .comment"
+            hx-confirm="Are you sure you would like to delete this comment"
+            class="input btn"
+          >
+            Delete
+          </button>
+        <% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <h3>No comments yet</h3>
+  <% end %>
+</div>

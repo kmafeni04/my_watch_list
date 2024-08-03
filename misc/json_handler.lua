@@ -1,26 +1,32 @@
--- local httpc = require("resty.http").new()
-local http = require("socket.http")
+local http = require("lapis.nginx.http")
 local util = require("lapis.util")
+
+---@async
+---@param url string
+---@param query? string | table
+---@return table
 local function json_handler(url, query)
-  -- local res, err = httpc:request_uri(url, {
-  --   method = "GET",
-  --   query = {
-  --     q = query
-  --   },
-  --   ssl_verify = false,
-  -- })
+  if query then
+    if type(query) == "string" then
+      local body, _, _ = http.simple(url .. query)
+      local response = util.from_json(body)
+      return response
+    elseif type(query) == "table" then
+      local query_combined = "?"
+      for key, value in pairs(query) do
+        query_combined = query_combined .. key .. "=" .. value .. "&"
+      end
+      local body, _, _ = http.simple(url .. query_combined)
 
-  -- if not res then
-  --   ngx.log(ngx.ERR, "request failed: ", err)
-  --   return
-  -- end
-
-  -- local body = res.body
-  -- local to_table = util.from_json(body)
-  -- return to_table
-  local body, _ = http.request(url .. query)
-  local response = util.from_json(body)
-  return response
+      local response = util.from_json(body)
+      return response
+    end
+  else
+    local body, _, _ = http.simple(url)
+    local response = util.from_json(body)
+    return response
+  end
 end
+
 
 return json_handler

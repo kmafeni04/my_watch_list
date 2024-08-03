@@ -4,15 +4,11 @@
     <div class="shows flex-col-center gap-m">
       <% for key, _ in pairs(shows) do %>
         <% show = shows[key] %>
-        <% show_list_button = string.format([[
-          <button hx-delete="/show/%s" hx-target="body" hx-indicator="#removing-indicator" class="btn input">Remove from list</button>
-          <p id="removing-indicator" class="htmx-indicator">Removing...</p>
-        ]], show.id)%>
-        <% render("views.partials.show_list", {show = show, show_list_button = show_list_button}) %>
+<% render("views.partials.show_list", { show = show ,button_method = "delete" ,button_url = url_for("show", { id = show.id, name = Slugify(show.name) }), button_content = "Remove from list", button_indicator = "Removing..." }) %>
       <% end %>
     </div>
-    <% else %>
+  <% else %>
     <h2>No shows in your list</h2>
-    <a href="<%= url_for("index") %>">Search and add some</a>
+    <a href="<%= url_for("search") %>" hx-indicator="#loading">Search and add some</a>
   <% end %>
 <% end %>

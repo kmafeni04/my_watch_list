@@ -1,5 +1,6 @@
+---@type ControllerTable
 return {
   root = function(self)
-    return { render = true }
+    return self:write({ render = true })
   end,
 }

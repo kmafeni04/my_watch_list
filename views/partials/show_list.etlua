@@ -9,7 +9,14 @@
     <p class="show__image flex-col-center">No image provided</p>
   <% end %>
   <div class="show__info grid gap-xs">
-    <h2><%= show.name %></h2>
+    <% if req.parsed_url.path ~= url_for('show', { id = show.id, name = Slugify(show.name)}) then %>
+      <a
+        href="<%= url_for("show", { id = show.id, name = Slugify(show.name) }) %>"
+        hx-indicator="#loading"
+      ><h2><%= show.name %></h2></a>
+    <% else %>
+      <h2><%= show.name %></h2>
+    <% end %>
     <p>
       Rating:
       <% if type(show.rating.average) == "number" then %>
@@ -59,6 +66,17 @@
     <% else %>
       No summary Available
     <% end %>
-    <%- show_list_button %>
+    <button
+      class="btn input"
+      hx-<%= button_method %>="<%= button_url %>"
+      hx-swap="outerHTML"
+      hx-target="body"
+      hx-include="find input"
+      hx-indicator="next #show-indicator"
+      <%= button_attributes %>
+    ><%= button_content %>
+      <input type="hidden" name="current_url" value="<%= req.parsed_url.path %>">
+    </button>
+    <p class="htmx-indicator" id="show-indicator"><%= button_indicator %></p>
   </div>
 </div>

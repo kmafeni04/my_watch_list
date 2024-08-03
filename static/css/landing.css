@@ -1,0 +1,26 @@
+.landing {
+  padding-inline: 10vw;
+}
+
+.landing__title {
+  font-size: 3rem;
+}
+.landing__paragraph {
+  color: color-mix(in srgb, var(--font-color-inverse) 30%, var(--font-color));
+}
+
+.landing__btn {
+  width: fit-content;
+  padding: 1rem;
+  font-size: 1rem;
+}
+
+.landing__image {
+  border-radius: 1rem;
+}
+
+@media (max-width: 900px) {
+  .landing__half:last-child {
+    display: none;
+  }
+}
