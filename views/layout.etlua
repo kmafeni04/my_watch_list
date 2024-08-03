@@ -80,8 +80,8 @@
   >
     <a href="<%= url_for("index")%>" hx-indicator="#loading" title="Home"><i class="nf nf-fa-home"></i></a>
     <a href="<%= url_for("search") %>" hx-indicator="#loading" title="Search"><i class="nf nf-fa-magnifying_glass"></i></a>
+    <a href="<%= url_for("airing") %>" hx-indicator="#loading" title="Airing"><i class="nf nf-md-television_play"></i></a>
     <% if session.current_user then %>
-      <a href="<%= url_for("airing") %>" hx-indicator="#loading" title="Airing"><i class="nf nf-md-television_play"></i></a>
       <a href="<%= url_for("shows") %>" hx-indicator="#loading" title="My List"><i class="nf nf-fa-list"></i></a>
       <a href="<%= url_for("settings") %>" hx-indicator="#loading" title="Settings"><i class="nf nf-fa-gear"></i></a>
       <a
