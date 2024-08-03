@@ -2,7 +2,7 @@ local lapis = require("lapis")
 ---@type App
 local app = lapis.Application()
 app:enable("etlua")
-app.layout = require "views.layout"
+app.layout = require("views.layout")
 
 local generic_controller = require("controllers.generic_controller")
 local shows_controller = require("controllers.shows_controller")
@@ -20,9 +20,7 @@ app:before_filter(function(self)
     [self:url_for("password_reset")] = true,
     [self:url_for("search")] = true,
     [self:url_for("airing")] = true,
-    [self:url_for("show", { id = self.params.id })] = true,
-    ["/proxy"] = true,
-    ["/favicon.ico"] = true,
+    [self:url_for("show", { id = self.params.id, name = self.params.name })] = true,
   }
   if not self.session.current_user and not protected_routes[self.req.parsed_url.path] then
     self:write({ redirect_to = self:url_for("login") })
@@ -40,6 +38,13 @@ app:before_filter(function(self)
     self:write({ redirect_to = self:url_for("index") })
   end
 end)
+
+---@param arg string
+---@return string
+function Slugify(arg)
+  local util = require("lapis.util")
+  return util.slugify(arg)
+end
 
 app:get("index", "/", generic_controller.root)
 
@@ -68,13 +73,17 @@ app:get("search", "/search", shows_controller.search)
 
 app:get("shows", "/shows", shows_controller.shows)
 
-app:get("show", "/show/:id", shows_controller.show)
-app:post("show", "/show/:id", shows_controller.show_post)
-app:delete("show", "/show/:id", shows_controller.show_delete)
+app:get("show", "/shows/:id/:name", shows_controller.show)
+app:post("show", "/shows/:id/:name", shows_controller.show_post)
+app:delete("show", "/shows/:id/:name", shows_controller.show_delete)
 
 app:post("comments", "/comments", shows_controller.comments_post)
 
 app:delete("comment", "/comment/:id", shows_controller.comment_delete)
+
+app:get("comment_likes_load", "/comment/:id/load", shows_controller.comment_likes_load)
+app:get("comment_like", "/comment/:id/like", shows_controller.comment_like)
+app:get("comment_dislike", "/comment/:id/dislike", shows_controller.comment_dislike)
 
 app:get("airing", "/airing", shows_controller.airing)
 

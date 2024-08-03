@@ -1,0 +1,6 @@
+.comment__like-btn.htmx-request .like-icon {
+  display: none;
+}
+.comment__dislike-btn.htmx-request .dislike-icon {
+  display: none;
+}

@@ -29,7 +29,7 @@ COPY . .
 
 RUN lapis migrate production --trace
 
-EXPOSE 80
+EXPOSE 433
 
 CMD ["lapis", "server", "production"]
 

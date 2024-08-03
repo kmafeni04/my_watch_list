@@ -1,7 +1,7 @@
 <% if type(show_in_db) == "table" and next(show_in_db) ~= nil then %>
-  <% render("views.partials.show_list", { show = show ,button_method = "delete" , button_url = url_for("show", { id = show.id}), button_content = "Remove from list", button_indicator = "Removing.." }) %>
+  <% render("views.partials.show_list", { show = show ,button_method = "delete" , button_url = url_for("show", { id = show.id, name = Slugify(show.name) }), button_content = "Remove from list", button_indicator = "Removing.." }) %>
   <% else %>
-    <% render("views.partials.show_list", { show = show ,button_method = "post" , button_url = url_for("show", { id = show.id}), button_content = "Add to list", button_indicator = "Adding..." }) %>
+    <% render("views.partials.show_list", { show = show ,button_method = "post" , button_url = url_for("show", { id = show.id, name = Slugify(show.name) }), button_content = "Add to list", button_indicator = "Adding..." }) %>
     <% end %>
     <h2>Comments</h2>
     <% if session.current_user then %>

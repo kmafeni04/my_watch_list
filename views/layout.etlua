@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/static/css/index.css"/>
     <link rel="stylesheet" href="/static/css/landing.css"/>
     <link rel="stylesheet" href="/static/css/shows.css">
-    <link rel="stylesheet" href="/static/css/popular.css">
+    <link rel="stylesheet" href="/static/css/comments.css">
     <link rel="stylesheet" href="https://www.nerdfonts.com/assets/css/webfont.css">
     <script src="/static/js/htmx(1.9.12).js"></script>
     <script src="/static/js/Alpinejs(3.14.0).js" defer></script>

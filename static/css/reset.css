@@ -62,11 +62,6 @@ body {
   min-height: 100svh;
 }
 
-a {
-  width: fit-content;
-  text-wrap: nowrap;
-}
-
 img,
 video,
 svg,

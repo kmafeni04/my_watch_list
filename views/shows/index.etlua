@@ -4,7 +4,7 @@
     <div class="shows flex-col-center gap-m">
       <% for key, _ in pairs(shows) do %>
         <% show = shows[key] %>
-<% render("views.partials.show_list", { show = show ,button_method = "delete" ,button_url = url_for("show", { id = show.id}), button_content = "Remove from list", button_indicator = "Removing..." }) %>
+<% render("views.partials.show_list", { show = show ,button_method = "delete" ,button_url = url_for("show", { id = show.id, name = Slugify(show.name) }), button_content = "Remove from list", button_indicator = "Removing..." }) %>
       <% end %>
     </div>
   <% else %>

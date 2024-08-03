@@ -9,6 +9,10 @@ body {
   box-shadow: 0 0 1px 1px var(--font-color);
   background-color: var(--bg-color);
   top: 0;
+
+  & a {
+    text-wrap: nowrap;
+  }
 }
 
 .bottom-nav {

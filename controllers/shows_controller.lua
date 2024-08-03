@@ -8,6 +8,16 @@ local Users = require("models.users")
 local Shows = require("models.shows")
 ---@type Model
 local Comments = require("models.comments")
+---@type Model
+local CommentLikes = require("models.comment_likes")
+
+local function toboolean(arg)
+  if arg == "1" or 1 or "true" or true then
+    return true
+  else
+    return false
+  end
+end
 
 ---@type ControllerTable
 return {
@@ -53,38 +63,23 @@ return {
     end)
     return { render = "shows.show" }
   end,
-  comments_post = function(self)
-    Comments:create({
-      username = self.session.current_user,
-      date = os.date("%Y-%m-%d"),
-      likes = 0,
-      content = self.params.content,
-      show_id = self.params.show_id
-    })
-    self.comments = Comments:select(db.clause({
-      show_id = self.params.show_id
-    }))
-    table.sort(self.comments, function(a, b)
-      return a.id > b.id
-    end)
-    return self:write({ render = "partials.comments", layout = false })
-  end,
-  comment_delete = function(self)
-    local comment = Comments:find({
-      id = self.params.id
-    })
-    assert(comment):delete()
-  end,
   show_post = function(self)
     if self.session.current_user then
       local user = Users:find({
         username = self.session.current_user
       })
-      Shows:create({
-        show_id = self.params.id,
-        user_id = assert(user).id
+      local show = Shows:find({
+        show_id = self.params.id
       })
-      return { redirect_to = self:url_for("shows") }
+      if not show then
+        Shows:create({
+          show_id = self.params.id,
+          user_id = assert(user).id
+        })
+        return self:write({ redirect_to = self.params.current_url })
+      else
+        return self:write({ redirect_to = self.params.current_url })
+      end
     else
       return self:write({ redirect_to = self:url_for("login") })
     end
@@ -93,13 +88,13 @@ return {
     local show = Shows:find({
       show_id = self.params.id
     })
-    show:delete()
+    assert(show):delete()
     self.shows = {}
     local shows = Shows:select()
     for key, _ in pairs(shows) do
       table.insert(self.shows, json_handler("https://api.tvmaze.com/shows/", tostring(shows[key].show_id)))
     end
-    return { headers = { ["HX-Location"] = self:url_for("shows") } }
+    return self:write({ headers = { ["HX-Location"] = self.params.current_url } })
   end,
   airing = function(self)
     if self.params.date and self.params.date ~= os.date("%Y-%m-%d") then
@@ -131,5 +126,147 @@ return {
       end
     end
     return { render = "airing" }
-  end
+  end,
+  comments_post = function(self)
+    Comments:create({
+      username = self.session.current_user,
+      date = os.date("%Y-%m-%d"),
+      likes = 0,
+      content = self.params.content,
+      show_id = self.params.show_id
+    })
+    self.comments = Comments:select(db.clause({
+      show_id = self.params.show_id
+    }))
+    table.sort(self.comments, function(a, b)
+      return a.id > b.id
+    end)
+    return self:write({ render = "partials.comments", layout = false })
+  end,
+  comment_delete = function(self)
+    local comment = Comments:find({
+      id = self.params.id
+    })
+    assert(comment):delete()
+  end,
+  comment_likes_load = function(self)
+    local user = Users:find({
+      username = self.session.current_user
+    })
+    self.comment = Comments:find({
+      id = self.params.id
+    })
+    self.comment_likes = CommentLikes:find({
+      user_id = assert(user).id,
+      comment_id = self.comment.id
+    })
+
+    if self.comment_likes.like == "0" then
+      self.comment_likes.like = false
+    else
+      self.comment_likes.like = true
+    end
+    if self.comment_likes.dislike == "0" then
+      self.comment_likes.dislike = false
+    else
+      self.comment_likes.dislike = true
+    end
+    return self:write({ render = "partials.comment_likes", layout = false })
+  end,
+  comment_like = function(self)
+    local user = Users:find({
+      username = self.session.current_user
+    })
+    self.comment = Comments:find({
+      id = self.params.id
+    })
+    self.comment_likes = CommentLikes:find({
+      user_id = assert(user).id,
+      comment_id = self.comment.id
+    })
+    if self.comment_likes and self.comment_likes.like == ("1" or true) then
+      self.comment_likes:update {
+        like = false,
+        dislike = false
+      }
+      self.comment:update({
+        likes = self.comment.likes - 1
+      })
+    elseif self.comment_likes and self.comment_likes.dislike == ("1" or true) and self.comment_likes.like == ("0" or false) then
+      self.comment_likes:update {
+        dislike = false,
+        like = true
+      }
+      self.comment:update({
+        likes = self.comment.likes + 2
+      })
+    elseif self.comment_likes and self.comment_likes.like == ("0" or false) then
+      self.comment_likes:update {
+        like = true,
+        dislike = false
+      }
+      self.comment:update({
+        likes = self.comment.likes + 1
+      })
+    else
+      CommentLikes:create({
+        user_id = assert(user).id,
+        comment_id = self.comment.id,
+        like = true,
+        dislike = false
+      })
+      self.comment:update({
+        likes = self.comment.likes + 1
+      })
+    end
+    return self:write({ render = "partials.comment_likes", layout = false })
+  end,
+  comment_dislike = function(self)
+    local user = Users:find({
+      username = self.session.current_user
+    })
+    self.comment = Comments:find({
+      id = self.params.id
+    })
+    self.comment_likes = CommentLikes:find({
+      user_id = assert(user).id,
+      comment_id = self.comment.id
+    })
+    if self.comment_likes and self.comment_likes.dislike == ("1" or true) then
+      self.comment_likes:update {
+        like = false,
+        dislike = false
+      }
+      self.comment:update({
+        likes = self.comment.likes + 1
+      })
+    elseif self.comment_likes and self.comment_likes.like == ("1" or true) and self.comment_likes.dislike == ("0" or false) then
+      self.comment_likes:update {
+        dislike = true,
+        like = false
+      }
+      self.comment:update({
+        likes = self.comment.likes - 2
+      })
+    elseif self.comment_likes and self.comment_likes.dislike == ("0" or false) then
+      self.comment_likes:update {
+        dislike = true,
+        like = false
+      }
+      self.comment:update({
+        likes = self.comment.likes - 1
+      })
+    else
+      CommentLikes:create({
+        user_id = assert(user).id,
+        comment_id = self.comment.id,
+        like = false,
+        dislike = true
+      })
+      self.comment:update({
+        likes = self.comment.likes - 1
+      })
+    end
+    return self:write({ render = "partials.comment_likes", layout = false })
+  end,
 }

@@ -30,6 +30,7 @@ return {
     })
 
     schema.create_index("shows", "show_id", { unique = true })
+
     if config._name == "development" then
       local password = encrypt("testpassword")
       db.insert("users", {
@@ -47,6 +48,16 @@ return {
       { "likes",    types.integer },
       { "content",  types.text },
       { "show_id",  types.integer },
+
+      "PRIMARY KEY (id)"
+    })
+
+    schema.create_table("comment_likes", {
+      { "id",         (types.serial or types.integer) },
+      { "like",       (types.boolean or types.text) },
+      { "dislike",    (types.boolean or types.text) },
+      { "user_id",    types.integer },
+      { "comment_id", types.integer },
 
       "PRIMARY KEY (id)"
     })

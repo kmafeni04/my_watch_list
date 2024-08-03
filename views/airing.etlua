@@ -1,15 +1,20 @@
 <h1>Top 5 Airing
   <%= day %></h1>
-<form action="<%= url_for('airing') %>" hx-indicator="#loading" class="flex-center gap-xs">
+<form
+  action="<%= url_for('airing') %>"
+  hx-indicator="#loading"
+  class="flex-center gap-xs"
+>
   <label for="date">Date:</label>
   <input
-  name="date"
-  type="date"
-  id="date"
-  class="input"
-  max="<%= os.date('%Y-%m-%d') %>"
-  autocomplete="off"
-  value="<%= time %>">
+    name="date"
+    type="date"
+    id="date"
+    class="input"
+    max="<%= os.date('%Y-%m-%d') %>"
+    autocomplete="off"
+    value="<%= time %>"
+  >
   <label for="country">Country:</label>
   <select name="country" id="country" class="input">
     <option hidden></option>
@@ -22,13 +27,13 @@
     <option value="US">United States</option>
   </select>
   <button class="input btn">Sort</button>
-  
+
 </form>
 <% if type(shows) == "table" and next(shows) ~= nil then %>
   <div class="popular-shows flex-col-center gap-m">
     <% for key, value in pairs(shows) do %>
       <% show = shows[key] %>
-      <% render("views.partials.show_list", { show = show ,button_method = "post" , button_url = url_for("show", { id = show.id}), button_content = "Add to list", button_indicator = "Adding..." }) %>
+      <% render("views.partials.show_list", { show = show ,button_method = "post" , button_url = url_for("show", { id = show.id, name = Slugify(show.name) }), button_content = "Add to list", button_indicator = "Adding..." }) %>
     <% end %>
   </div>
 <% else %>

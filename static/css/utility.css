@@ -156,6 +156,10 @@
   font-weight: 700;
   transition: 0.2s;
 }
+.btn[data-clicked] {
+  background-color: var(--font-color);
+  color: var(--font-color-inverse);
+}
 
 .btn:hover,
 .btn:focus {
