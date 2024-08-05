@@ -24,7 +24,7 @@
     <div class="shows flex-col-center gap-m">
       <% for key, _ in pairs(shows) do %>
         <% show = shows[key].show %>
-<% render("views.partials.show_list", { show = show ,button_method = "post" , button_url = url_for("show", { id = show.id}), button_content = "Add to list", button_indicator = "Adding..." }) %>
+        <% render("views.partials.show_list", { show = show, reroute_url = req.parsed_url.path .. "?" ..  req.parsed_url.query }) %>
       <% end %>
     </div>
     <% elseif params.query == "" then %>

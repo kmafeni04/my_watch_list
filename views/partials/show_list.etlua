@@ -1,3 +1,4 @@
+<% local util = require("lapis.util") %>
 <div class="show flex-center gap-s">
   <% if type(show.image) == "table" and type(show.image.original) == "string" then %>
     <img
@@ -66,17 +67,12 @@
     <% else %>
       No summary Available
     <% end %>
-    <button
-      class="btn input"
-      hx-<%= button_method %>="<%= button_url %>"
+    <div
+      class=""
+      hx-get="<%= url_for('show_button', { show_id = show.id, reroute_url = util.escape(reroute_url) } )%>"
+      hx-target="this"
       hx-swap="outerHTML"
-      hx-target="body"
-      hx-include="find input"
-      hx-indicator="next #show-indicator"
-      <%= button_attributes %>
-    ><%= button_content %>
-      <input type="hidden" name="current_url" value="<%= req.parsed_url.path %>">
-    </button>
-    <p class="htmx-indicator" id="show-indicator"><%= button_indicator %></p>
+      hx-trigger="load"
+    ></div>
   </div>
 </div>

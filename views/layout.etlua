@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/static/css/index.css"/>
     <link rel="stylesheet" href="/static/css/landing.css"/>
     <link rel="stylesheet" href="/static/css/shows.css">
+    <link rel="stylesheet" href="/static/css/airing.css">
     <link rel="stylesheet" href="/static/css/comments.css">
     <link rel="stylesheet" href="https://www.nerdfonts.com/assets/css/webfont.css">
     <script src="/static/js/htmx(1.9.12).js"></script>

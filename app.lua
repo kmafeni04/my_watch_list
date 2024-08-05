@@ -73,6 +73,7 @@ app:get("search", "/search", shows_controller.search)
 
 app:get("shows", "/shows", shows_controller.shows)
 
+app:get("show_button", "/show_button/:show_id/:reroute_url", shows_controller.show_button)
 app:get("show", "/shows/:id/:name", shows_controller.show)
 app:post("show", "/shows/:id/:name", shows_controller.show_post)
 app:delete("show", "/shows/:id/:name", shows_controller.show_delete)
@@ -86,5 +87,6 @@ app:get("comment_like", "/comment/:id/like", shows_controller.comment_like)
 app:get("comment_dislike", "/comment/:id/dislike", shows_controller.comment_dislike)
 
 app:get("airing", "/airing", shows_controller.airing)
+
 
 return app

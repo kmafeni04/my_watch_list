@@ -63,6 +63,17 @@ return {
     end)
     return { render = "shows.show" }
   end,
+  show_button = function(self)
+    local show_in_db = Shows:find({
+      show_id = self.params.show_id
+    })
+    self.reroute_url = self.params.reroute_url
+    self.show = json_handler("https://api.tvmaze.com/shows/", self.params.show_id)
+    if show_in_db and next(show_in_db) ~= nil then
+      self.show_id = show_in_db.show_id
+    end
+    return self:write({ layout = false, render = "partials.show_button" })
+  end,
   show_post = function(self)
     if self.session.current_user then
       local user = Users:find({
@@ -71,15 +82,11 @@ return {
       local show = Shows:find({
         show_id = self.params.id
       })
-      if not show then
-        Shows:create({
-          show_id = self.params.id,
-          user_id = assert(user).id
-        })
-        return self:write({ redirect_to = self.params.current_url })
-      else
-        return self:write({ redirect_to = self.params.current_url })
-      end
+      Shows:create({
+        show_id = self.params.id,
+        user_id = assert(user).id
+      })
+      return self:write({ redirect_to = self.params.reroute_url })
     else
       return self:write({ redirect_to = self:url_for("login") })
     end
@@ -89,12 +96,7 @@ return {
       show_id = self.params.id
     })
     assert(show):delete()
-    self.shows = {}
-    local shows = Shows:select()
-    for key, _ in pairs(shows) do
-      table.insert(self.shows, json_handler("https://api.tvmaze.com/shows/", tostring(shows[key].show_id)))
-    end
-    return self:write({ headers = { ["HX-Location"] = self.params.current_url } })
+    return self:write({ headers = { ["HX-Location"] = self.params.reroute_url } })
   end,
   airing = function(self)
     if self.params.date and self.params.date ~= os.date("%Y-%m-%d") then

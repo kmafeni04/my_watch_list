@@ -10,7 +10,7 @@
 
 .show > * {
   height: max-content;
-  width: min(400px, 70vw);
+  width: min(400px, 60vw);
 }
 
 .show__image {

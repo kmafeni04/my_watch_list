@@ -9,21 +9,19 @@ body {
   box-shadow: 0 0 1px 1px var(--font-color);
   background-color: var(--bg-color);
   top: 0;
-
-  & a {
-    text-wrap: nowrap;
-  }
 }
 
+.top-nav a {
+  text-wrap: nowrap;
+}
 .bottom-nav {
   display: none;
-
-  & a {
-    text-decoration: none;
-  }
-  & .nf {
-    font-size: 1.5rem;
-  }
+}
+.bottom-nav a {
+  text-decoration: none;
+}
+.bottom-nav .nf {
+  font-size: 1.5rem;
 }
 
 @media only screen and (max-width: 900px) {

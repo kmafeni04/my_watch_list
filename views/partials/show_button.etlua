@@ -1,0 +1,32 @@
+<% local util = require("lapis.util") %>
+<% if not show_id then %>
+  <button
+    class="btn input"
+    hx-post="<%= url_for('show', { id = show.id, name = Slugify(show.name) }) %>"
+    hx-swap="outerHTML"
+    hx-target="body"
+    hx-push-url="true"
+    hx-include="find input"
+    hx-indicator="next #show-indicator"
+  >Add to List
+    <input type="hidden" name="reroute_url" value="<%= url_for('shows') %>">
+  </button>
+  <p class="htmx-indicator" id="show-indicator">Adding...</p>
+<% else %>
+  <button
+    class="btn input"
+    hx-delete="<%= url_for('show', { id = show.id, name = Slugify(show.name) }) %>"
+    hx-swap="outerHTML"
+    hx-target="body"
+    hx-push-url="true"
+    hx-include="find input"
+    hx-indicator="next #show-indicator"
+  >Remove from List
+    <input
+      type="hidden"
+      name="reroute_url"
+      value="<%= util.unescape(reroute_url) %>"
+    >
+  </button>
+  <p class="htmx-indicator" id="show-indicator">Removing...</p>
+<% end %>
