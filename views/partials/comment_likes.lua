@@ -5,7 +5,7 @@ return Widget:extend(function(self)
   button(
     {
       class = "input btn comment__like-btn",
-      ["hx-get"] = self:url_for("comment_like", { id = self.comment.id }),
+      ["hx-post"] = self:url_for("comment_like", { id = self.comment.id }),
       ["hx-target"] = "closest #comment-likes",
       ["hx-indicator"] = true,
       ["data-clicked"] = self.comment_likes.like
@@ -18,7 +18,7 @@ return Widget:extend(function(self)
   button(
     {
       class = "input btn comment__dislike-btn",
-      ["hx-get"] = self:url_for("comment_dislike", { id = self.comment.id }),
+      ["hx-post"] = self:url_for("comment_dislike", { id = self.comment.id }),
       ["hx-target"] = "closest #comment-likes",
       ["hx-indicator"] = true,
       ["data-clicked"] = self.comment_likes.dislike

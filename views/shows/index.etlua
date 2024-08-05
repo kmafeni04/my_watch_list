@@ -1,3 +1,4 @@
+<div class="show-list flex-col-center gap-s">
 <h1>My Show List</h1>
 <% if type(shows) == "table" then %>
   <% if #shows ~= 0 then %>
@@ -12,3 +13,4 @@
     <a href="<%= url_for("search") %>" hx-indicator="#loading">Search and add some</a>
   <% end %>
 <% end %>
+</div>

@@ -72,7 +72,7 @@ return {
     if show_in_db and next(show_in_db) ~= nil then
       self.show_id = show_in_db.show_id
     end
-    return self:write({ layout = false, render = "partials.show_button" })
+    return self:write({ render = "partials.show_button", layout = false })
   end,
   show_post = function(self)
     if self.session.current_user then
@@ -149,29 +149,40 @@ return {
     local comment = Comments:find({
       id = self.params.id
     })
+    local comment_like = CommentLikes:find({
+      comment_id = assert(comment).id
+    })
+    if comment_like then
+      comment_like:delete()
+    end
     assert(comment):delete()
   end,
   comment_likes_load = function(self)
-    local user = Users:find({
-      username = self.session.current_user
-    })
     self.comment = Comments:find({
       id = self.params.id
     })
     self.comment_likes = CommentLikes:find({
-      user_id = assert(user).id,
       comment_id = self.comment.id
     })
-
-    if self.comment_likes.like == "0" then
+    if self.comment_likes then
+      if self.comment_likes.like == "0" then
+        self.comment_likes.like = false
+      elseif self.comment_likes.like == "1" then
+        self.comment_likes.like = true
+      else
+        self.comment_likes.like = false
+      end
+      if self.comment_likes.dislike == "0" then
+        self.comment_likes.dislike = false
+      elseif self.comment_likes.dislike == "1" then
+        self.comment_likes.dislike = true
+      else
+        self.comment_likes.dislike = false
+      end
+    else
+      self.comment_likes = {}
       self.comment_likes.like = false
-    else
-      self.comment_likes.like = true
-    end
-    if self.comment_likes.dislike == "0" then
       self.comment_likes.dislike = false
-    else
-      self.comment_likes.dislike = true
     end
     return self:write({ render = "partials.comment_likes", layout = false })
   end,
@@ -183,7 +194,6 @@ return {
       id = self.params.id
     })
     self.comment_likes = CommentLikes:find({
-      user_id = assert(user).id,
       comment_id = self.comment.id
     })
     if self.comment_likes and self.comment_likes.like == ("1" or true) then
@@ -217,6 +227,11 @@ return {
         like = true,
         dislike = false
       })
+      self.comment_likes = CommentLikes:find({
+        user_id = assert(user).id,
+        comment_id = self.comment.id
+      })
+      self.comment_likes.dislike = false
       self.comment:update({
         likes = self.comment.likes + 1
       })
@@ -265,6 +280,11 @@ return {
         like = false,
         dislike = true
       })
+      self.comment_likes = CommentLikes:find({
+        user_id = assert(user).id,
+        comment_id = self.comment.id
+      })
+      self.comment_likes.like = false
       self.comment:update({
         likes = self.comment.likes - 1
       })

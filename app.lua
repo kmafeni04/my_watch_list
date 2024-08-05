@@ -18,6 +18,8 @@ app:before_filter(function(self)
     [self:url_for("forgot_password")] = true,
     [self:url_for("password_reset_sent")] = true,
     [self:url_for("password_reset")] = true,
+    [self:url_for("show_button", { show_id = self.params.show_id, reroute_url = self.params.reroute_url })] = true,
+    [self:url_for("comment_likes_load", { id = self.params.id })] = true,
     [self:url_for("search")] = true,
     [self:url_for("airing")] = true,
     [self:url_for("show", { id = self.params.id, name = self.params.name })] = true,
@@ -83,8 +85,8 @@ app:post("comments", "/comments", shows_controller.comments_post)
 app:delete("comment", "/comment/:id", shows_controller.comment_delete)
 
 app:get("comment_likes_load", "/comment/:id/load", shows_controller.comment_likes_load)
-app:get("comment_like", "/comment/:id/like", shows_controller.comment_like)
-app:get("comment_dislike", "/comment/:id/dislike", shows_controller.comment_dislike)
+app:post("comment_like", "/comment/:id/like", shows_controller.comment_like)
+app:post("comment_dislike", "/comment/:id/dislike", shows_controller.comment_dislike)
 
 app:get("airing", "/airing", shows_controller.airing)
 

@@ -4,6 +4,10 @@ body {
   overflow-x: clip;
 }
 
+.main-content {
+  align-self: center;
+}
+
 .top-nav {
   padding: 1rem 5rem;
   box-shadow: 0 0 1px 1px var(--font-color);

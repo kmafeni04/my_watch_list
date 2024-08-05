@@ -11,14 +11,13 @@
     <link rel="stylesheet" href="/static/css/index.css"/>
     <link rel="stylesheet" href="/static/css/landing.css"/>
     <link rel="stylesheet" href="/static/css/shows.css">
-    <link rel="stylesheet" href="/static/css/airing.css">
     <link rel="stylesheet" href="/static/css/comments.css">
     <link rel="stylesheet" href="https://www.nerdfonts.com/assets/css/webfont.css">
     <script src="/static/js/htmx(1.9.12).js"></script>
     <script src="/static/js/Alpinejs(3.14.0).js" defer></script>
   </head>
-  <body hx-boost="true" class="height-max">
-    <nav class="top-nav sticky width-max flex gap-s">
+  <body hx-boost="true" class="flex-col-center height-max">
+    <nav class="top-nav fixed width-max flex gap-s">
       <div class="top-nav__item flex justify-start width-100">
         <a href="<%= url_for("index") %>" hx-indicator="#loading">
           <h2>My Watch List</h2>
@@ -70,7 +69,7 @@
       </div>
     </nav>
     <div class="htmx-indicator loading loading__desktop" id="loading"></div>
-    <main class="flex-col-center gap-xs padding-block-m">
+    <main class="main-content flex-col-center gap-xs padding-block-l">
       <% content_for("inner") %>
     </main>
   </body>
