@@ -2,7 +2,7 @@
 <% if not show_id then %>
   <button
     class="btn input"
-    hx-post="<%= url_for('show', { id = show.id, name = Slugify(show.name) }) %>"
+    hx-post="<%= url_for('show', { id = show.id, name = util.slugify(show.name) }) %>"
     hx-swap="outerHTML"
     hx-target="body"
     hx-push-url="true"
@@ -15,7 +15,7 @@
 <% else %>
   <button
     class="btn input"
-    hx-delete="<%= url_for('show', { id = show.id, name = Slugify(show.name) }) %>"
+    hx-delete="<%= url_for('show', { id = show.id, name = util.slugify(show.name) }) %>"
     hx-swap="outerHTML"
     hx-target="body"
     hx-push-url="true"

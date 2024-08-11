@@ -41,12 +41,6 @@ app:before_filter(function(self)
   end
 end)
 
----@param arg string
----@return string
-function Slugify(arg)
-  local util = require("lapis.util")
-  return util.slugify(arg)
-end
 
 app:get("index", "/", generic_controller.root)
 

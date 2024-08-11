@@ -10,9 +10,9 @@
     <p class="show__image flex-col-center">No image provided</p>
   <% end %>
   <div class="show__info grid gap-xs">
-    <% if req.parsed_url.path ~= url_for('show', { id = show.id, name = Slugify(show.name)}) then %>
+    <% if req.parsed_url.path ~= url_for('show', { id = show.id, name = util.slugify(show.name)}) then %>
       <a
-        href="<%= url_for("show", { id = show.id, name = Slugify(show.name) }) %>"
+        href="<%= url_for("show", { id = show.id, name = util.slugify(show.name) }) %>"
         hx-indicator="#loading"
       ><h2><%= show.name %></h2></a>
     <% else %>

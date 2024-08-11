@@ -7,7 +7,7 @@ local Users = require("models.users")
 return {
   login = function(self)
     self.errors = {}
-    return { render = "login" }
+    return self:write({ render = "login" })
   end,
   login_post = function(self)
     self.errors = {}
@@ -22,7 +22,7 @@ return {
   end,
   signup = function(self)
     self.errors = {}
-    return { render = "signup" }
+    return self:write({ render = "signup" })
   end,
   signup_post = function(self)
     self.errors = {}
