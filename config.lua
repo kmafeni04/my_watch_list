@@ -1,5 +1,7 @@
 ---@type Config
 local config = require("lapis.config")
+local dotenv = require("misc.dotenv")
+local env, err = dotenv.load()
 
 config({ "development", "production" }, {
   server = "nginx",
@@ -10,19 +12,15 @@ config("development", {
   num_workers = "1",
   port = 8080,
   sqlite = {
-    database = "app.sqlite",
+    database = env.get("DATABASE"),
   },
 })
 
 config("production", {
   code_cache = "on",
   num_workers = "auto",
-  port = 80,
-  postgres = {
-    host = os.getenv("PGHOST"),
-    port = os.getenv("PGPORT"),
-    user = os.getenv("PGUSER"),
-    password = os.getenv("PGPASSWORD"),
-    database = os.getenv("PGDATABASE"),
+  port = 8080,
+  sqlite = {
+    database = env.get("DATABASE"),
   },
 })

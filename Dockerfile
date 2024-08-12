@@ -2,11 +2,7 @@ FROM openresty/openresty:jammy
 
 WORKDIR /app
 
-ARG PGHOST
-ARG PGPORT
-ARG PGUSER
-ARG PGDATABASE
-ARG PGPASSWORD
+ARG DATABASE
 
 ARG GMAIL_EMAIL
 ARG GMAIL_PASSWORD
@@ -26,6 +22,8 @@ RUN luarocks install lua-resty-mail
 RUN luarocks install tableshape
 
 COPY . .
+
+RUN mkdir /data
 
 RUN lapis migrate production --trace
 

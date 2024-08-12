@@ -4,3 +4,4 @@ nginx.conf.compiled
 *_temp/
 types/
 .git
+.env
