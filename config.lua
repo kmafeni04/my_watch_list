@@ -20,7 +20,11 @@ config("production", {
   code_cache = "on",
   num_workers = "auto",
   port = 8080,
-  sqlite = {
-    database = env.get("DATABASE"),
-  },
+  postgres = {
+    host = env.get("PGHOST"),
+    database = env.get("PGDATABASE"),
+    password = env.get("PGPASSWORD"),
+    port = env.get("PGPORT"),
+    user = env.get("PGUSER")
+  }
 })

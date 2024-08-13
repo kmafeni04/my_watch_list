@@ -2,7 +2,11 @@ FROM openresty/openresty:jammy
 
 WORKDIR /app
 
-ARG DATABASE
+ARG PGDATABASE
+ARG PGPORT
+ARG PGUSER
+ARG PGPASSWORD
+ARG PGHOST
 
 RUN apt-get update
 RUN apt-get install -y sqlite3 \
@@ -19,8 +23,6 @@ RUN luarocks install lua-resty-mail
 RUN luarocks install tableshape
 
 COPY . .
-
-RUN mkdir /data
 
 RUN lapis migrate production --trace
 
