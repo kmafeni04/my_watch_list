@@ -4,7 +4,7 @@ local util = require("lapis.util")
 ---@async
 ---@param url string
 ---@param query? string | table
----@return table
+---@return table | string? response
 local function json_handler(url, query)
   if query then
     if type(query) == "string" then
@@ -26,6 +26,7 @@ local function json_handler(url, query)
     local response = util.from_json(body)
     return response
   end
+  return "no query provided"
 end
 
 

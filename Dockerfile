@@ -4,9 +4,6 @@ WORKDIR /app
 
 ARG DATABASE
 
-ARG GMAIL_EMAIL
-ARG GMAIL_PASSWORD
-
 RUN apt-get update
 RUN apt-get install -y sqlite3 \
  libssl-dev \
@@ -27,7 +24,7 @@ RUN mkdir /data
 
 RUN lapis migrate production --trace
 
-EXPOSE 80
+EXPOSE 8080
 
 CMD ["lapis", "server", "production"]
 
