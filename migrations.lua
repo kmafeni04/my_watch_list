@@ -41,25 +41,36 @@ return {
     end
   end,
   [2] = function()
+    local id
+    local date
+    local like
+    local dislike
+    if config.postgres then
+      id = types.serial({ primary_key = true })
+      date = types.date
+      like = types.boolean
+      dislike = types.boolean
+    else
+      id = types.integer({ primary_key = true })
+      date = types.text
+      like = types.text
+      dislike = types.text
+    end
     schema.create_table("comments", {
-      { "id",       (types.serial or types.integer) },
+      { "id",       id },
       { "username", types.text },
-      { "date",     (types.date or types.text) },
+      { "date",     date },
       { "likes",    types.integer },
       { "content",  types.text },
       { "show_id",  types.integer },
-
-      "PRIMARY KEY (id)"
     })
 
     schema.create_table("comment_likes", {
-      { "id",         (types.serial or types.integer) },
-      { "like",       (types.boolean or types.text) },
-      { "dislike",    (types.boolean or types.text) },
+      { "id",         id },
+      { "like",       like },
+      { "dislike",    dislike },
       { "user_id",    types.integer },
       { "comment_id", types.integer },
-
-      "PRIMARY KEY (id)"
     })
   end
 }

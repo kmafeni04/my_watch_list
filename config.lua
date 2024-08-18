@@ -3,6 +3,10 @@ local config = require("lapis.config")
 local dotenv = require("misc.dotenv")
 local env, err = dotenv.load()
 
+if err then
+  print(err)
+end
+
 config({ "development", "production" }, {
   server = "nginx",
 })
