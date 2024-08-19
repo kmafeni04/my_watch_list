@@ -1,5 +1,7 @@
 local Widget = require("lapis.html").Widget
 
+local ShowInfo = require("views.widgets.show_info")
+
 return Widget:extend(function(self)
 	div({ class = "show-list flex-col-center gap-s" }, function()
 		h1("My Show List")
@@ -8,7 +10,7 @@ return Widget:extend(function(self)
 				div({ class = "shows flex-col-center gap-m" }, function()
 					for key, _ in pairs(self.shows) do
 						local show = self.shows[key]
-						render("views.partials.show_list", { show = show, reroute_url = self.req.parsed_url.path })
+						widget(ShowInfo({ show = show, reroute_url = self.req.parsed_url.path }))
 					end
 				end)
 			else

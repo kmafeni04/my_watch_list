@@ -68,6 +68,9 @@ return {
 		return self:write({ render = "widgets.show_button", layout = false })
 	end,
 	show_post = function(self)
+		if not csrf_validate(self) then
+			return self:write({ status = 403 })
+		end
 		if self.session.current_user then
 			local user = Users:find({
 				username = self.session.current_user,
@@ -85,6 +88,9 @@ return {
 		end
 	end,
 	show_delete = function(self)
+		if not csrf_validate(self) then
+			return self:write({ status = 403 })
+		end
 		local show = Shows:find({
 			show_id = self.params.id,
 		})
@@ -126,6 +132,9 @@ return {
 		return self:write({ render = "airing" })
 	end,
 	comments_post = function(self)
+		if not csrf_validate(self) then
+			return self:write({ status = 403 })
+		end
 		Comments:create({
 			username = self.session.current_user,
 			date = os.date("%Y-%m-%d"),
@@ -139,9 +148,12 @@ return {
 		table.sort(self.comments, function(a, b)
 			return a.id > b.id
 		end)
-		return self:write({ render = "partials.comments", layout = false })
+		return self:write({ render = "widgets.comments", layout = false })
 	end,
 	comment_delete = function(self)
+		if not csrf_validate(self) then
+			return self:write({ status = 403 })
+		end
 		local comment = Comments:find({
 			id = self.params.id,
 		})
@@ -180,9 +192,12 @@ return {
 			self.comment_likes.like = false
 			self.comment_likes.dislike = false
 		end
-		return self:write({ render = "partials.comment_likes", layout = false })
+		return self:write({ render = "widgets.comment_likes", layout = false })
 	end,
 	comment_like = function(self)
+		if not csrf_validate(self) then
+			return self:write({ status = 403 })
+		end
 		local user = Users:find({
 			username = self.session.current_user,
 		})
@@ -236,9 +251,12 @@ return {
 				likes = self.comment.likes + 1,
 			})
 		end
-		return self:write({ render = "partials.comment_likes", layout = false })
+		return self:write({ render = "widgets.comment_likes", layout = false })
 	end,
 	comment_dislike = function(self)
+		if not csrf_validate(self) then
+			return self:write({ status = 403 })
+		end
 		local user = Users:find({
 			username = self.session.current_user,
 		})

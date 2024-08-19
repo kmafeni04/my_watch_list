@@ -1,10 +1,9 @@
+---@type Widget
 local Widget = require("lapis.html").Widget
 local util = require("lapis.util")
 
 return Widget:extend(function(self)
-	div({
-		class = "show flex-center gap-s",
-	}, function()
+	div({ class = "show flex-center gap-s" }, function()
 		if type(self.show.image) == "table" and type(self.show.image.original) == "string" then
 			img({
 				class = "show__image",

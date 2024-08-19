@@ -2,9 +2,7 @@ local Widget = require("lapis.html").Widget
 local ShowInfo = require("views.widgets.show_info")
 
 return Widget:extend(function(self)
-	div({
-		class = "airing flex-col-center gap-s",
-	}, function()
+	div({ class = "airing flex-col-center gap-s" }, function()
 		h1("Top 5 Airing " .. self.day)
 		form({
 			action = self:url_for("airing"),
@@ -40,7 +38,7 @@ return Widget:extend(function(self)
 		end)
 		if type(self.shows) == "table" and next(self.shows) ~= nil then
 			div({ class = "popular-shows flex-col-center gap-m" }, function()
-				for key, value in pairs(self.shows) do
+				for key in pairs(self.shows) do
 					local show = self.shows[key]
 					widget(ShowInfo({ show = show, reroute_url = self.req.parsed_url.path }))
 				end

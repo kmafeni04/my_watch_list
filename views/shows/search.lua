@@ -12,7 +12,6 @@ return Widget:extend(function(self)
 			["hx-push-url"] = "true",
 			["hx-target"] = "body",
 		}, function()
-			widget(self.csrf)
 			label({ ["for"] = "search" }, "Search:")
 			input({ class = "input", id = "search", name = "query" })
 			button({

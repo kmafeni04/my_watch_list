@@ -1,3 +1,4 @@
+---@type Widget
 local Widget = require("lapis.html").Widget
 
 return Widget:extend(function(self)
@@ -18,10 +19,8 @@ return Widget:extend(function(self)
 						class = "general-errors",
 					}, function()
 						ul(function()
-							for key, error in pairs(self.general_errors) do
-								li(function()
-									p(error)
-								end)
+							for _, error in pairs(self.general_errors) do
+								li({ style = "color: red;" }, error)
 							end
 						end)
 					end)
@@ -88,7 +87,7 @@ return Widget:extend(function(self)
 				}, function()
 					ul(function()
 						for _, error in pairs(self.password_errors) do
-							li(error)
+							li({ style = "color: red;" }, error)
 						end
 					end)
 				end)
@@ -104,7 +103,7 @@ return Widget:extend(function(self)
 					["for"] = "current-password",
 				}, "Current Password:")
 				input({
-					[":type"] = [[viewable ? 'text' : 'password']],
+					[":type"] = "viewable ? 'text' : 'password'",
 					name = "current_password",
 					id = "current-password",
 					class = "input",
@@ -114,7 +113,7 @@ return Widget:extend(function(self)
 					["for"] = "new-password",
 				}, "New Password:")
 				input({
-					[":type"] = [[viewable ? 'text' : 'password']],
+					[":type"] = "viewable ? 'text' : 'password'",
 					name = "new_password",
 					id = "new-password",
 					class = "input",
@@ -124,31 +123,23 @@ return Widget:extend(function(self)
 					["for"] = "confirm-new-password",
 				}, "Confirm New Password:")
 				input({
-					[":type"] = [[viewable ? 'text' : 'password']],
+					[":type"] = "viewable ? 'text' : 'password'",
 					name = "confirm_new_password",
 					id = "confirm-new-password",
 					class = "input",
 					required = true,
 				})
-				div({
-					class = "show-password",
-				}, function()
-					label({
-						["for"] = "show-password-check",
-					}, "Show Password")
+				div({ class = "show-password" }, function()
+					label({ ["for"] = "show-password-check" }, "Show Password")
 					input({ type = "checkbox", autocomplete = "off", ["@click"] = "viewable = !viewable" })
 				end)
-				div({
-					class = "settings-form__buttons flex align-center gap-s",
-				}, function()
+				div({ class = "settings-form__buttons flex align-center gap-s" }, function()
 					button({
 						type = "button",
 						["@click"] = "editable = false",
 						class = "input btn width-100",
 					}, "Cancel")
-					button({
-						class = "input btn width-100",
-					}, "Submit")
+					button({ class = "input btn width-100" }, "Submit")
 				end)
 			end)
 			button({

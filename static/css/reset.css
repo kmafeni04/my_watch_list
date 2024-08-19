@@ -62,6 +62,12 @@ body {
   min-height: 100svh;
 }
 
+input,
+select,
+textarea {
+  font-size: inherit;
+}
+
 img,
 video,
 svg,

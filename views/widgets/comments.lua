@@ -9,7 +9,7 @@ return Widget:extend(function(self)
 					div({ class = "comment__header flex-center gap-xs" }, function()
 						h3(comment.username)
 						p(function()
-							text("on")
+							text("on ")
 							span(comment.date)
 						end)
 						div({
@@ -21,13 +21,15 @@ return Widget:extend(function(self)
 					end)
 					pre(comment.content)
 					if comment.username == self.session.current_user then
-						button({
+						form({
 							["hx-delete"] = self:url_for("comment", { id = comment.id }),
 							["hx-swap"] = "delete",
 							["hx-target"] = "closest .comment",
 							["hx-confirm"] = "Are you sure you would like to delete this comment",
-							class = "input btn",
-						}, "Delete")
+						}, function()
+							widget(self.csrf)
+							button({ class = "input btn width-100" }, "Delete")
+						end)
 					end
 				end)
 			end

@@ -1,8 +1,9 @@
+---@type Widget
 local Widget = require("lapis.html").Widget
 
 return Widget:extend(function(self)
 	raw("<!DOCTYPE html >")
-	html({ lang = "en" }, function()
+	html({ lang = "en", ["hx-indicator"] = "none" }, function()
 		head(function()
 			meta({ charset = "UTF-8" })
 			meta({ name = "viewport", content = "width=device-width, initial-scale=1" })

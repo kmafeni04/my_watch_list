@@ -1,9 +1,20 @@
 local csrf_validated = require("lapis.csrf").validate_token
+local dotenv = require("misc.dotenv")
+
+local env, err = dotenv.load()
+if err then
+	print(err)
+end
 
 local encrypt = require("misc.bcrypt").encrypt
 local verify = require("misc.bcrypt").verify
 local mailer = require("misc.mailer")
 local Users = require("models.users")
+
+local test = {}
+function test:hello() end
+
+test:hello()
 
 ---@type ControllerTable
 return {
@@ -13,9 +24,21 @@ return {
 	end,
 	login_post = function(self)
 		if not csrf_validated(self) then
-			return "csrf warning"
+			return self:write({ status = 403 })
 		end
 		self.errors = {}
+		if #self.params.username <= 5 then
+			table.insert(self.errors, "Username must be at least 5 characters")
+		end
+		if #self.params.username >= 15 then
+			table.insert(self.errors, "Username must be shorter than 15 characters")
+		end
+		if #self.params.password <= 10 then
+			table.insert(self.errors, "Password must be at least 10 characters")
+		end
+		if #self.params.password >= 30 then
+			table.insert(self.errors, "Password must be shorter than 30 characters")
+		end
 		local user = Users:find({ username = self.params.username })
 		if user and verify(self.params.password, user.password) then
 			self.session.current_user = self.params.username
@@ -31,12 +54,24 @@ return {
 	end,
 	signup_post = function(self)
 		if not csrf_validated(self) then
-			return "csrf warning"
+			return self:write({ status = 403 })
 		end
 		self.errors = {}
+		if #self.params.username <= 5 then
+			table.insert(self.errors, "Username must be at least 5 characters")
+		end
+		if #self.params.username >= 15 then
+			table.insert(self.errors, "Username must be shorter than 15 characters")
+		end
+		if #self.params.password <= 10 then
+			table.insert(self.errors, "Password must be at least 10 characters")
+		end
+		if #self.params.password >= 30 then
+			table.insert(self.errors, "Password must be shorter than 30 characters")
+		end
 		local user = Users:find({
 			username = self.params.username,
-			email = self.params.email,
+			email = string.lower(self.params.email),
 		})
 		if self.params.password ~= self.params.confirm_password then
 			table.insert(self.errors, "Passwords do not match")
@@ -48,9 +83,9 @@ return {
 			math.randomseed(os.time())
 			self.session.signup_code = math.random(1000, 9999)
 			mailer(
-				assert(os.getenv("GMAIL_EMAIL")),
-				assert(os.getenv("GMAIL_PASSWORD")),
-				string.format("Leonard Mafeni <%s>", assert(os.getenv("GMAIL_EMAIL"))),
+				assert(env.get("GMAIL_EMAIL")),
+				assert(env.get("GMAIL_PASSWORD")),
+				string.format("Leonard Mafeni <%s>", assert(env.get("GMAIL_EMAIL"))),
 				{ self.params.email },
 				"Registration",
 				string.format(
@@ -67,12 +102,13 @@ return {
 		end
 	end,
 	signup_complete = function(self)
-		print(self.params.signup_code)
-		print(self.session.signup_code)
+		if not csrf_validated(self) then
+			return self:write({ status = 403 })
+		end
 		if tonumber(self.params.signup_code) == tonumber(self.session.signup_code) then
 			Users:create({
 				username = self.params.username,
-				email = self.params.email,
+				email = string.lower(self.params.email),
 				password = self.params.password,
 			})
 			self.session.current_user = self.params.username

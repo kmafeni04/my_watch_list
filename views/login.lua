@@ -1,11 +1,14 @@
+---@type Widget
 local Widget = require("lapis.html").Widget
 
 return Widget:extend(function(self)
 	h1("Login")
 	if #self.errors > 0 then
-		for _, error in pairs(self.errors) do
-			p(error)
-		end
+		ul(function()
+			for _, error in pairs(self.errors) do
+				li({ style = "color: red;" }, error)
+			end
+		end)
 	end
 	form({
 		class = "user-form grid gap-xs",
@@ -14,21 +17,26 @@ return Widget:extend(function(self)
 		["hx-indicator"] = "#loading",
 		["x-data"] = "{ viewable: false }",
 	}, function()
+		widget(self.csrf)
 		label({ ["for"] = "username" }, "Username:")
 		input({
 			class = "input",
 			id = "username",
 			type = "text",
 			name = "username",
+			minlength = "5",
+			maxlength = "15",
 		})
 		label({ ["for"] = "password" }, "Password:")
 		input({
 			class = "input",
 			id = "password",
-			[":type"] = [[!viewable ? 'password' : 'text']],
+			[":type"] = "!viewable ? 'password' : 'text'",
 			name = "password",
+			minlength = "10",
+			maxlength = "30",
 		})
-		div({ class = "show-password" }, function()
+		div({ class = "show-password flex align-center gap-xs" }, function()
 			label({ ["for"] = "show-password" }, "Show password:")
 			input({
 				type = "checkbox",
@@ -39,8 +47,8 @@ return Widget:extend(function(self)
 		end)
 		a({ href = self:url_for("forgot_password") }, "Forgot Password?")
 		button({ class = "input btn" }, "Login")
-		p(function()
-			text([[Don't have an account?]])
+		p({ class = "flex gap-xs" }, function()
+			text("Don't have an account?")
 			a({ href = self:url_for("signup"), ["hx-indicator"] = "#loading" }, "Sign up")
 		end)
 	end)

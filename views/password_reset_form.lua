@@ -1,3 +1,4 @@
+---@type Widget
 local Widget = require("lapis.html").Widget
 
 return Widget:extend(function(self)

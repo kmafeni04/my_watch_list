@@ -1,11 +1,14 @@
+---@type Widget
 local Widget = require("lapis.html").Widget
 
 return Widget:extend(function(self)
 	h1("Sign up")
 	if #self.errors > 0 then
-		for _, error in pairs(self.errors) do
-			p(error)
-		end
+		ul(function()
+			for _, error in pairs(self.errors) do
+				li({ style = "color: red;" }, error)
+			end
+		end)
 	end
 	form({
 		class = "user-form grid gap-xs",
@@ -49,14 +52,14 @@ return Widget:extend(function(self)
 			minlength = "10",
 			maxlength = "30",
 		})
-		div({ class = "show-password" }, function()
+		div({ class = "show-password flex align-center gap-xs" }, function()
 			label({ ["for"] = "show-password" }, "Show password:")
 			input({ type = "checkbox", autocomplete = "off", ["@click"] = "viewable = !viewable" })
 		end)
 		button({
 			class = "input btn",
 		}, "Sign up")
-		p(function()
+		p({ class = "flex gap-xs" }, function()
 			text("Already have an account?")
 			a({ href = self:url_for("login"), ["hx-indicator"] = "#loading" }, "Login")
 		end)
