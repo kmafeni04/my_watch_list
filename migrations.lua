@@ -11,22 +11,22 @@ local encrypt = require("misc.bcrypt").encrypt
 return {
   [1] = function()
     schema.create_table("users", {
-      { "id",       (types.serial or types.integer) },
+      { "id", (types.serial or types.integer) },
       { "username", types.text },
-      { "email",    types.text },
+      { "email", types.text },
       { "password", types.text },
 
-      "PRIMARY KEY (id)"
+      "PRIMARY KEY (id)",
     })
 
     schema.create_index("users", "username", "email", { unique = true })
 
     schema.create_table("shows", {
-      { "id",      (types.serial or types.integer) },
+      { "id", (types.serial or types.integer) },
       { "show_id", types.integer },
       { "user_id", types.integer },
 
-      "PRIMARY KEY (id)"
+      "PRIMARY KEY (id)",
     })
 
     schema.create_index("shows", "show_id", { unique = true })
@@ -36,7 +36,7 @@ return {
       db.insert("users", {
         username = "testuser",
         email = "test@test.com",
-        password = password
+        password = password,
       })
     end
   end,
@@ -57,20 +57,20 @@ return {
       dislike = types.text
     end
     schema.create_table("comments", {
-      { "id",       id },
+      { "id", id },
       { "username", types.text },
-      { "date",     date },
-      { "likes",    types.integer },
-      { "content",  types.text },
-      { "show_id",  types.integer },
+      { "date", date },
+      { "likes", types.integer },
+      { "content", types.text },
+      { "show_id", types.integer },
     })
 
     schema.create_table("comment_likes", {
-      { "id",         id },
-      { "like",       like },
-      { "dislike",    dislike },
-      { "user_id",    types.integer },
+      { "id", id },
+      { "like", like },
+      { "dislike", dislike },
+      { "user_id", types.integer },
       { "comment_id", types.integer },
     })
-  end
+  end,
 }

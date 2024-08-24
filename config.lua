@@ -29,6 +29,6 @@ config("production", {
     database = env.get("PGDATABASE"),
     password = env.get("PGPASSWORD"),
     port = env.get("PGPORT"),
-    user = env.get("PGUSER")
-  }
+    user = env.get("PGUSER"),
+  },
 })

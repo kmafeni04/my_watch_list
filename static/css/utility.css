@@ -172,6 +172,18 @@
   padding: 0.5rem 0.75rem;
 }
 
+.input[data-validate]:not(:placeholder-shown):invalid {
+  border: solid 1px red;
+}
+
+.input[data-validate]:not(:placeholder-shown):valid {
+  border: solid 1px lightgreen;
+}
+
+.input[data-validate]:focus:invalid {
+  border: solid 1px yellow;
+}
+
 .btn {
   font-weight: 700;
   transition: 0.2s;

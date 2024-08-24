@@ -1,6 +1,0 @@
-[submodule "types/lapis_annotations"]
-	path = types/lapis_annotations
-	url = https://github.com/kmafeni04/lapis_luals_annotations
-[submodule "types/openresty_annotations"]
-	path = types/openresty_annotations
-	url = https://github.com/LuaCATS/openresty

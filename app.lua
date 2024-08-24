@@ -13,43 +13,43 @@ local user_controller = require("controllers.user_controller")
 
 --- CSRF widget
 app:before_filter(function(self)
-	local csrf_token = csrf.generate_token(self)
-	self.csrf = Widget:extend(function()
-		input({ type = "hidden", value = csrf_token, name = "csrf_token" })
-	end)
+  local csrf_token = csrf.generate_token(self)
+  self.csrf = Widget:extend(function()
+    input({ type = "hidden", value = csrf_token, name = "csrf_token" })
+  end)
 end)
 
 -- User not logged in
 app:before_filter(function(self)
-	local protected_routes = {
-		[self:url_for("index")] = true,
-		[self:url_for("login")] = true,
-		[self:url_for("signup")] = true,
-		[self:url_for("signup_complete")] = true,
-		[self:url_for("forgot_password")] = true,
-		[self:url_for("password_reset_sent")] = true,
-		[self:url_for("password_reset")] = true,
-		[self:url_for("show_button", { show_id = self.params.show_id, reroute_url = self.params.reroute_url })] = true,
-		[self:url_for("comment_likes_load", { id = self.params.id })] = true,
-		[self:url_for("search")] = true,
-		[self:url_for("airing")] = true,
-		[self:url_for("show", { id = self.params.id, name = self.params.name })] = true,
-	}
-	if not self.session.current_user and not protected_routes[self.req.parsed_url.path] then
-		self:write({ redirect_to = self:url_for("login") })
-	end
+  local protected_routes = {
+    [self:url_for("index")] = true,
+    [self:url_for("login")] = true,
+    [self:url_for("signup")] = true,
+    [self:url_for("signup_complete")] = true,
+    [self:url_for("forgot_password")] = true,
+    [self:url_for("password_reset_sent")] = true,
+    [self:url_for("password_reset")] = true,
+    [self:url_for("show_button", { show_id = self.params.show_id, reroute_url = self.params.reroute_url })] = true,
+    [self:url_for("comment_likes_load", { id = self.params.id })] = true,
+    [self:url_for("search")] = true,
+    [self:url_for("airing")] = true,
+    [self:url_for("show", { id = self.params.id, name = self.params.name })] = true,
+  }
+  if not self.session.current_user and not protected_routes[self.req.parsed_url.path] then
+    self:write({ redirect_to = self:url_for("login") })
+  end
 end)
 
 -- User logged in
 app:before_filter(function(self)
-	local protected_routes = {
-		[self:url_for("login")] = true,
-		[self:url_for("signup")] = true,
-		[self:url_for("forgot_password")] = true,
-	}
-	if self.session.current_user and protected_routes[self.req.parsed_url.path] then
-		self:write({ redirect_to = self:url_for("index") })
-	end
+  local protected_routes = {
+    [self:url_for("login")] = true,
+    [self:url_for("signup")] = true,
+    [self:url_for("forgot_password")] = true,
+  }
+  if self.session.current_user and protected_routes[self.req.parsed_url.path] then
+    self:write({ redirect_to = self:url_for("index") })
+  end
 end)
 
 app:get("index", "/", generic_controller.root)
