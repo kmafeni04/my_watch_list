@@ -27,7 +27,7 @@ return Widget:extend(function(self)
       minlength = "5",
       maxlength = "15",
       required = true,
-      placeholder = "username",
+      placeholder = "Username",
       ["data-validate"] = true,
     })
     label({ ["for"] = "password" }, "Password:")

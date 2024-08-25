@@ -1,7 +1,5 @@
 ---@type Widget
 local Widget = require("lapis.html").Widget
-local util = require("lapis.util")
-
 local ShowInfo = require("views.widgets.show_info")
 
 return Widget:extend(function(self)

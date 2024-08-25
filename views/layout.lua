@@ -46,7 +46,7 @@ return Widget:extend(function(self)
                 type = "search",
                 name = "query",
                 required = true,
-                placeholder = "search...",
+                placeholder = "Search",
               })
             else
               input({
@@ -55,7 +55,7 @@ return Widget:extend(function(self)
                 type = "search",
                 name = "query",
                 required = true,
-                placeholder = "search...",
+                placeholder = "Search",
               })
             end
           end)

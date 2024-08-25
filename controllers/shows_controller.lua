@@ -28,6 +28,7 @@ return {
     end
     return { render = "shows.my_shows" }
   end,
+
   search = function(self)
     if not self.params.query then
       self.params.query = ""
@@ -38,6 +39,7 @@ return {
     end
     return { render = "shows.search" }
   end,
+
   show = function(self)
     self.show = json_handler("https://api.tvmaze.com/shows/", self.params.id)
     local user
@@ -50,6 +52,7 @@ return {
         user_id = assert(user).id,
       })
     end
+
     self.comments = Comments:select(db.clause({
       show_id = self.params.id,
     }))
@@ -58,6 +61,7 @@ return {
     end)
     return { render = "shows.show" }
   end,
+
   show_button = function(self)
     local show_in_db = Shows:find({
       show_id = self.params.show_id,
@@ -69,6 +73,7 @@ return {
     end
     return self:write({ render = "widgets.show_button", layout = false })
   end,
+
   show_post = function(self)
     if not csrf_validate(self) then
       return self:write({ status = 403 })
@@ -89,6 +94,7 @@ return {
       return self:write({ redirect_to = self:url_for("login") })
     end
   end,
+
   show_delete = function(self)
     if not csrf_validate(self) then
       return self:write({ status = 403 })
@@ -99,6 +105,7 @@ return {
     assert(show):delete()
     return self:write({ headers = { ["HX-Location"] = self.params.reroute_url } })
   end,
+
   airing = function(self)
     if self.params.date and self.params.date ~= os.date("%Y-%m-%d") then
       self.time = self.params.date
@@ -133,6 +140,7 @@ return {
     end
     return self:write({ render = "airing" })
   end,
+
   comments_post = function(self)
     if not csrf_validate(self) then
       return self:write({ status = 403 })
@@ -152,6 +160,7 @@ return {
     end)
     return self:write({ render = "widgets.comments", layout = false })
   end,
+
   comment_delete = function(self)
     if not csrf_validate(self) then
       return self:write({ status = 403 })
@@ -167,6 +176,7 @@ return {
     end
     assert(comment):delete()
   end,
+
   comment_likes_load = function(self)
     self.comment = Comments:find({
       id = self.params.id,
@@ -196,6 +206,7 @@ return {
     end
     return self:write({ render = "widgets.comment_likes", layout = false })
   end,
+
   comment_like = function(self)
     if not csrf_validate(self) then
       return self:write({ status = 403 })
@@ -255,6 +266,7 @@ return {
     end
     return self:write({ render = "widgets.comment_likes", layout = false })
   end,
+
   comment_dislike = function(self)
     if not csrf_validate(self) then
       return self:write({ status = 403 })

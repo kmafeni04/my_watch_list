@@ -1,7 +1,4 @@
 local lapis = require("lapis")
-local csrf = require("lapis.csrf")
----@type Widget
-local Widget = require("lapis.html").Widget
 ---@type App
 local app = lapis.Application()
 app:enable("etlua")
@@ -13,10 +10,7 @@ local user_controller = require("controllers.user_controller")
 
 --- CSRF widget
 app:before_filter(function(self)
-  local csrf_token = csrf.generate_token(self)
-  self.csrf = Widget:extend(function()
-    input({ type = "hidden", value = csrf_token, name = "csrf_token" })
-  end)
+  require("misc.csrf_widget")(self)
 end)
 
 -- User not logged in
