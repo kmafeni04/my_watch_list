@@ -11,6 +11,7 @@ return Widget:extend(function(self)
     ["hx-indicator"] = "#loading",
     class = "grid gap-xs",
   }, function()
+    widget(self.csrf)
     label({ ["for"] = "code-input" }, "Code:")
     input({
       type = "text",

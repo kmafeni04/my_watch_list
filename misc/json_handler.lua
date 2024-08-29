@@ -9,7 +9,7 @@ local util = require("lapis.util")
 local function json_handler(url, query)
   if query then
     if type(query) == "string" then
-      local body, _, _ = http.simple(url .. query)
+      local body = http.simple(url .. query)
       local response = util.from_json(body)
       return response
     elseif type(query) == "table" then
@@ -17,13 +17,13 @@ local function json_handler(url, query)
       for key, value in pairs(query) do
         query_combined = query_combined .. key .. "=" .. value .. "&"
       end
-      local body, _, _ = http.simple(url .. query_combined)
+      local body = http.simple(url .. query_combined)
 
       local response = util.from_json(body)
       return response --[[@as table]]
     end
   else
-    local body, _, _ = http.simple(url)
+    local body = http.simple(url)
     local response = util.from_json(body)
 
     return response --[[@as table]]

@@ -3,7 +3,7 @@ local Widget = require("lapis.html").Widget
 
 return Widget:extend(function(self)
   h1("Sign up")
-  if #self.errors > 0 then
+  if next(self.errors) then
     ul(function()
       for _, error in pairs(self.errors) do
         li({ style = "color: red;" }, error)
@@ -15,7 +15,6 @@ return Widget:extend(function(self)
     action = self:url_for("signup"),
     method = "post",
     ["hx-indicator"] = "#loading",
-    ["x-data"] = "{ viewable: false }",
   }, function()
     widget(self.csrf)
     label({ ["for"] = "username" }, "Username:")
@@ -44,7 +43,7 @@ return Widget:extend(function(self)
     input({
       class = "input",
       id = "password",
-      [":type"] = [[!viewable ? 'password' : 'text']],
+      type = "password",
       name = "password",
       minlength = "8",
       maxlength = "30",
@@ -55,8 +54,8 @@ return Widget:extend(function(self)
     label({ ["for"] = "confirm_password" }, "Confirm password:")
     input({
       class = "input",
-      id = "confirm_password",
-      [":type"] = [[!viewable ? 'password' : 'text']],
+      id = "confirm-password",
+      type = "password",
       name = "confirm_password",
       minlength = "8",
       maxlength = "30",
@@ -66,7 +65,20 @@ return Widget:extend(function(self)
     })
     div({ class = "show-password flex align-center gap-xs" }, function()
       label({ ["for"] = "show-password" }, "Show password:")
-      input({ type = "checkbox", autocomplete = "off", ["@click"] = "viewable = !viewable" })
+      input({
+        type = "checkbox",
+        autocomplete = "off",
+        _ = [[
+            on click
+            for input in [#password, #confirm-password]
+              if input's @type is "password" then
+                set input's @type to "text"
+              else
+                set input's @type to "password"
+              end
+            end
+          ]],
+      })
     end)
     button({
       class = "input btn",

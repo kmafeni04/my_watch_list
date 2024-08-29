@@ -122,36 +122,43 @@ return {
     end
   end,
   forgot_password = function(self)
+    self.errors = {}
     return self:write({ render = "forgot_password" })
   end,
   forgot_password_post = function(self)
+    if not csrf_validated(self) then
+      return self:write({ status = 403 })
+    end
+    self.errors = {}
     local user = Users:find({
       email = self.params.email,
     })
     if type(user) ~= "table" or next(user) == nil then
-      return "This email doesn't exist"
-    else
-      self.session.reset_email = self.params.email
-      math.randomseed(os.time())
-      self.session.reset_code = math.random(1000, 9999)
-      mailer(
-        assert(os.getenv("GMAIL_EMAIL")),
-        assert(os.getenv("GMAIL_PASSWORD")),
-        string.format("leonard mafeni <%s>", assert(os.getenv("GMAIL_EMAIL"))),
-        { self.params.email },
-        "Password Reset",
-        string.format(
-          [[
+      table.insert(self.errors, "This email does not exist")
+    end
+    if next(self.errors) then
+      return self:write({ render = "forgot_password" })
+    end
+    self.session.reset_email = self.params.email
+    math.randomseed(os.time())
+    self.session.reset_code = math.random(1000, 9999)
+    mailer(
+      assert(os.getenv("GMAIL_EMAIL")),
+      assert(os.getenv("GMAIL_PASSWORD")),
+      string.format("leonard mafeni <%s>", assert(os.getenv("GMAIL_EMAIL"))),
+      { self.params.email },
+      "Password Reset",
+      string.format(
+        [[
             <p>do not reply this email</p>
             <p>your reset code is:</p>
             <h2>%s</h2>
             <p>if you did not request to reset, kindly ignore this and nothing will be changed</p>
           ]],
-          self.session.reset_code
-        )
+        self.session.reset_code
       )
-      return self:write({ render = "password_reset_sent" })
-    end
+    )
+    return self:write({ render = "password_reset_sent" })
   end,
   password_reset_sent = function(self)
     print("the reset code is " .. self.session.reset_code)
@@ -163,6 +170,9 @@ return {
     end
   end,
   password_reset = function(self)
+    if not csrf_validated(self) then
+      return self:write({ status = 403 })
+    end
     local user = Users:find({
       email = self.session.reset_email,
     })

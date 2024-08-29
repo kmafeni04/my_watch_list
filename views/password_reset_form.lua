@@ -8,14 +8,13 @@ return Widget:extend(function(self)
     method = "post",
     ["hx-push-url"] = "false",
     ["hx-indicator"] = "#loading",
-    ["x-data"] = "{ viewable: false }",
     class = "grid gap-xs",
   }, function()
+    widget(self.csrf)
     label({
       ["for"] = "new-password",
     }, "New Password")
     input({
-      [":type"] = "viewable ? 'text' : 'password'",
       id = "new-password",
       name = "new_password",
       class = "input",
@@ -24,7 +23,6 @@ return Widget:extend(function(self)
       ["for"] = "confirm-password",
     }, "Confirm Password")
     input({
-      [":type"] = "viewable ? 'text' : 'password'",
       id = "confirm-password",
       name = "confirm_password",
       class = "input",
@@ -35,7 +33,20 @@ return Widget:extend(function(self)
       label({
         ["for"] = "show-password",
       }, "Show password:")
-      input({ type = "checkbox", autocomplete = "off", ["@click"] = "viewable = !viewable" })
+      input({
+        type = "checkbox",
+        autocomplete = "off",
+        _ = [[
+            on click
+            for input in [#new-password, #confirm-new-password]
+              if input's @type is "password" then
+                set input's @type to "text"
+              else
+                set input's @type to "password"
+              end
+            end
+          ]],
+      })
     end)
     button({ class = "input" }, "Chnage Password")
   end)

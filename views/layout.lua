@@ -19,7 +19,7 @@ return Widget:extend(function(self)
       link({ rel = "stylesheet", href = "/static/css/comments.css" })
       link({ rel = "stylesheet", href = "https://www.nerdfonts.com/assets/css/webfont.css" })
       script({ src = "/static/js/htmx(1.9.12).js" })
-      script({ src = "/static/js/Alpinejs(3.14.0).js", defer = true })
+      script({ src = "/static/js/hyperscript.min(0.9.12).js" })
     end)
     body({ ["hx-boost"] = "true", class = "flex-col-center height-max" }, function()
       nav({ class = "top-nav fixed width-max flex gap-s" }, function()
@@ -76,12 +76,10 @@ return Widget:extend(function(self)
               class = "input btn",
             }, "Logout")
           else
-            button({
-              ["hx-get"] = self:url_for("login"),
-              ["hx-target"] = "body",
-              ["hx-push-url"] = "true",
+            a({
+              href = self:url_for("login"),
               ["hx-indicator"] = "#loading",
-              class = "input btn",
+              class = "input btn no-decoration",
             }, "Login")
           end
         end)

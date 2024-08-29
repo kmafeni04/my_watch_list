@@ -12,6 +12,7 @@
 }
 
 .height-max {
+  min-height: 100vh;
   min-height: 100svh;
 }
 
@@ -210,6 +211,10 @@
 .btn-danger:hover,
 .btn-danger:focus {
   box-shadow: 0 0 5px 1px red;
+}
+
+.no-decoration {
+  text-decoration: none;
 }
 
 .htmx-indicator {

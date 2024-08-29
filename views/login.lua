@@ -3,7 +3,7 @@ local Widget = require("lapis.html").Widget
 
 return Widget:extend(function(self)
   h1("Login")
-  if #self.errors > 0 then
+  if next(self.errors) then
     ul(function()
       for _, error in pairs(self.errors) do
         li({ style = "color: red;" }, error)
@@ -15,7 +15,6 @@ return Widget:extend(function(self)
     action = self:url_for("login"),
     method = "post",
     ["hx-indicator"] = "#loading",
-    ["x-data"] = "{ viewable: false }",
   }, function()
     widget(self.csrf)
     label({ ["for"] = "username" }, "Username:")
@@ -34,7 +33,7 @@ return Widget:extend(function(self)
     input({
       class = "input",
       id = "password",
-      [":type"] = "!viewable ? 'password' : 'text'",
+      type = "password",
       name = "password",
       minlength = "8",
       maxlength = "30",
@@ -48,7 +47,14 @@ return Widget:extend(function(self)
         type = "checkbox",
         id = "show-password",
         autocomplete = "off",
-        ["@click"] = "viewable = !viewable",
+        _ = [[
+            on click
+            if #password's @type is "password" then
+              set #password's @type to "text"
+            else
+              set #password's @type to "password"
+            end
+          ]],
       })
     end)
     a({ href = self:url_for("forgot_password") }, "Forgot Password?")
