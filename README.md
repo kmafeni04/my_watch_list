@@ -35,7 +35,6 @@ There is also a Dockerfile provided that can be used to run the project in produ
 ### How to run
 ```sh
 docker build -t my_watch_list \ 
---build-arg LAPIS_ENVIRONMENT="production" \
 --build-arg PGDATABASE="YOUR_VAR" \
 --build-arg PGPORT="YOUR_VAR" \
 --build-arg PGUSER="YOUR_VAR" \

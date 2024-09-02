@@ -2,7 +2,7 @@ FROM openresty/openresty:jammy
 
 WORKDIR /app
 
-ARG LAPIS_ENVIRONMENT
+ARG DATABASE
 ARG PGDATABASE
 ARG PGPORT
 ARG PGUSER
@@ -15,21 +15,14 @@ RUN apt-get install -y sqlite3 \
  libsqlite3-dev
 RUN apt-get clean
 
-RUN luarocks install luasec
-RUN luarocks install lapis 
-RUN luarocks install etlua 
-RUN luarocks install lsqlite3
-RUN luarocks install bcrypt
-RUN luarocks install lua-resty-mail
-RUN luarocks install tableshape
-
 COPY . .
 
+RUN luarocks install --only-deps --lua-version=5.1 my-watch-list-dev-1.rockspec
 RUN lapis migrate production --trace
 
 EXPOSE 8080
 
-CMD ["lapis", "server", "${LAPIS_ENVIRONMENT}"]
+CMD ["lapis", "server", "production"]
 
 
 

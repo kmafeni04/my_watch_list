@@ -16,7 +16,7 @@ config("development", {
   num_workers = "1",
   port = 8080,
   sqlite = {
-    database = env.get("DATABASE"),
+    database = "app.sqlite",
   },
 })
 
