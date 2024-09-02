@@ -68,6 +68,9 @@ app:get("search", "/search", shows_controller.search)
 app:get("shows", "/shows", shows_controller.shows)
 
 app:get("show_button", "/show_button/:show_id/:reroute_url", shows_controller.show_button)
+
+app:post("show_watched", "/show_watched/:show_id", shows_controller.show_watched)
+
 app:get("show", "/shows/:id/:name", shows_controller.show)
 app:post("show", "/shows/:id/:name", shows_controller.show_post)
 app:delete("show", "/shows/:id/:name", shows_controller.show_delete)

@@ -70,7 +70,9 @@ picture {
   width: 100%;
 }
 
-button {
+button,
+input[type="radio"],
+input[type="checkbox"] {
   cursor: pointer;
 }
 

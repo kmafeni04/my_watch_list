@@ -73,4 +73,7 @@ return {
       { "comment_id", types.integer },
     })
   end,
+  [3] = function()
+    schema.add_column("shows", "watched", types.text)
+  end,
 }

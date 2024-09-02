@@ -75,6 +75,29 @@ return Widget:extend(function(self)
           text("N/A")
         end
       end)
+      if self.my_show then
+        p(self.watched)
+        form({
+          ["hx-post"] = self:url_for("show_watched", { show_id = self.show.id }),
+          ["hx-swap"] = "innerHTML",
+          ["hx-trigger"] = "click",
+          ["hx-indicator"] = "#watched-indicator",
+          class = "flex align-center gap-xs",
+        }, function()
+          local watched = false
+          if self.show.watched == "true" then
+            watched = true
+          end
+          label({ ["for"] = "watched" }, "Watched:")
+          input({
+            id = "watched",
+            type = "checkbox",
+            autocomplete = "off",
+            checked = watched,
+          })
+          p({ id = "watched-indicator", class = "htmx-indicator" }, "Updating...")
+        end)
+      end
       if type(self.show.summary) == "string" then
         raw(self.show.summary)
       else

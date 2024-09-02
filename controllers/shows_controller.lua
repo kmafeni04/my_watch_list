@@ -4,13 +4,9 @@ local csrf_validate = require("lapis.csrf").validate_token
 local json_handler = require("misc.json_handler")
 local util = require("lapis.util")
 
----@type Model
 local Users = require("models.users")
----@type Model
 local Shows = require("models.shows")
----@type Model
 local Comments = require("models.comments")
----@type Model
 local CommentLikes = require("models.comment_likes")
 
 ---@type ControllerTable
@@ -23,10 +19,46 @@ return {
     local shows = Shows:select(db.clause({
       user_id = assert(user).id,
     }))
-    for key, _ in pairs(shows) do
-      table.insert(self.shows, json_handler("https://api.tvmaze.com/shows/", tostring(shows[key].show_id)))
+    self.shows_watched = {}
+    if self.params.sort == "newest" then
+      table.sort(shows, function(a, b)
+        return a.id > b.id
+      end)
     end
-    return { render = "shows.my_shows" }
+    if self.params.sort == "oldest" then
+      table.sort(shows, function(a, b)
+        return a.id < b.id
+      end)
+    end
+    if self.params.sort == "watched" then
+      table.sort(shows, function(a)
+        if a.watched == "true" then
+          return a
+        end
+      end)
+    end
+    if self.params.sort == "not_watched" then
+      table.sort(shows, function(a)
+        if a.watched == "false" then
+          return a
+        end
+      end)
+    end
+    for key, value in pairs(shows) do
+      table.insert(self.shows, json_handler("https://api.tvmaze.com/shows/", tostring(value.show_id)))
+      self.shows[key].watched = value.watched
+    end
+    if self.params.sort == "a_z" then
+      table.sort(self.shows, function(a, b)
+        return a.name < b.name
+      end)
+    end
+    if self.params.sort == "z_a" then
+      table.sort(self.shows, function(a, b)
+        return a.name > b.name
+      end)
+    end
+    return self:write({ render = "shows.my_shows" })
   end,
 
   search = function(self)
@@ -62,6 +94,50 @@ return {
     return { render = "shows.show" }
   end,
 
+  show_watched = function(self)
+    local user = Users:find({
+      username = self.session.current_user,
+    })
+    local show = Shows:find({
+      user_id = assert(user).id,
+      show_id = self.params.show_id,
+    })
+    if assert(show).watched == "true" then
+      show:update({
+        watched = "false",
+      })
+      return self:write(
+        self:html(function()
+          label({ ["for"] = "watched" }, "Watched:")
+          input({
+            id = "watched",
+            type = "checkbox",
+            autocomplete = "off",
+          })
+          p({ id = "watched-indicator", class = "htmx-indicator" }, "Updating...")
+        end),
+        { layout = false }
+      )
+    else
+      show:update({
+        watched = "true",
+      })
+      return self:write(
+        self:html(function()
+          label({ ["for"] = "watched" }, "Watched:")
+          input({
+            id = "watched",
+            type = "checkbox",
+            autocomplete = "off",
+            checked = true,
+          })
+          p({ id = "watched-indicator", class = "htmx-indicator" }, "Updating...")
+        end),
+        { layout = false }
+      )
+    end
+  end,
+
   show_button = function(self)
     local show_in_db = Shows:find({
       show_id = self.params.show_id,
@@ -88,6 +164,7 @@ return {
       Shows:create({
         show_id = self.params.id,
         user_id = assert(user).id,
+        watched = "false",
       })
       return self:write({ redirect_to = self.params.reroute_url })
     else
