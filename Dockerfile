@@ -2,6 +2,7 @@ FROM openresty/openresty:jammy
 
 WORKDIR /app
 
+ARG LAPIS_ENVIRONMENT
 ARG PGDATABASE
 ARG PGPORT
 ARG PGUSER
@@ -28,7 +29,7 @@ RUN lapis migrate production --trace
 
 EXPOSE 8080
 
-CMD ["lapis", "server", "production"]
+CMD ["lapis", "server", "${LAPIS_ENVIRONMENT}"]
 
 
 
