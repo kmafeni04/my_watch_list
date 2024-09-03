@@ -74,6 +74,6 @@ return {
     })
   end,
   [3] = function()
-    schema.add_column("shows", "watched", types.text)
+    schema.add_column("shows", "watched", types.text({ default = "false" }))
   end,
 }
