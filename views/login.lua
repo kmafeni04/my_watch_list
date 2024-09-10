@@ -10,6 +10,16 @@ return Widget:extend(function(self)
       end
     end)
   end
+  script({ type = "text/hyperscript" }, function()
+    raw([[
+    def trim(val)
+      set text to val
+      set no_space to text.trim().replace(' ','')
+      set val to no_space
+      return val
+    end
+    ]])
+  end)
   form({
     class = "user-form grid gap-xs",
     action = self:url_for("login"),
@@ -28,6 +38,10 @@ return Widget:extend(function(self)
       required = true,
       placeholder = "Username",
       ["data-validate"] = true,
+      _ = [[
+          on input
+          set my value to trim(my.value)
+        ]],
     })
     label({ ["for"] = "password" }, "Password:")
     input({
@@ -40,6 +54,10 @@ return Widget:extend(function(self)
       required = true,
       placeholder = "8+ characters",
       ["data-validate"] = true,
+      _ = [[
+          on input
+          set my value to trim(my.value)
+        ]],
     })
     div({ class = "show-password flex align-center gap-xs" }, function()
       label({ ["for"] = "show-password" }, "Show password:")

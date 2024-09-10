@@ -2,7 +2,7 @@ local Widget = require("lapis.html").Widget
 local ShowInfo = require("views.widgets.show_info")
 
 return Widget:extend(function(self)
-  div({ class = "airing flex-col-center gap-s" }, function()
+  div({ class = "airing width-100 flex-col-center gap-s" }, function()
     h1("Top 5 Airing " .. self.day)
     form({
       action = self:url_for("airing"),
@@ -25,7 +25,7 @@ return Widget:extend(function(self)
       label({ ["for"] = "country", class = "flex-center gap-xs" }, function()
         text("Country:")
         element("select", { name = "country", id = "country", class = "input" }, function()
-          option({ value = "US", hidden = true })
+          option({ value = self.params.country, hidden = true })
           option({ value = "AF" }, "Afghanistan")
           option({ value = "AL" }, "Albania")
           option({ value = "DZ" }, "Algeria")

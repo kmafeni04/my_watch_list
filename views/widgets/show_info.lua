@@ -99,7 +99,26 @@ return Widget:extend(function(self)
         end)
       end
       if type(self.show.summary) == "string" then
-        raw(self.show.summary)
+        if
+          self.req.parsed_url.path
+          ~= self:url_for("show", { id = self.show.id, name = util.slugify(self.show.name) })
+        then
+          div({
+            _ = [[
+            on load 
+            set desired_length to 250
+            set text to my innerHTML
+            if text.length > desired_length 
+              set my innerHTML to text.substring(0, desired_length).trim() + '...'
+              console.log(my innerHTML)
+            end
+          ]],
+          }, function()
+            raw(self.show.summary)
+          end)
+        else
+          raw(self.show.summary)
+        end
       else
         text("No summary Available")
       end

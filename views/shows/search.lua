@@ -17,7 +17,7 @@ return Widget:extend(function(self)
       input({ class = "input", id = "search", name = "query" })
       button({
         class = "btn input",
-      }, "search")
+      }, "Search")
     end)
   end
   if type(self.shows) == "table" then

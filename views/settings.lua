@@ -5,8 +5,8 @@ local interp = require("misc.interp")
 
 return Widget:extend(function(self)
   div({ class = "settings flex-col gap-m height-max" }, function()
-    div({ class = "settings__general grid-center gap-s" }, function()
-      h2("General")
+    div({ class = "settings__general grid gap-s" }, function()
+      h2({ class = "justify-self-center" }, "General")
       form({
         id = "details-form",
         action = self:url_for("settings"),
@@ -81,18 +81,11 @@ return Widget:extend(function(self)
           }, "Submit")
         end)
       end)
-      button({
-        ["hx-delete"] = self:url_for("delete_account"),
-        ["hx-target"] = "body",
-        ["hx-push-url"] = self:url_for("index"),
-        ["hx-confirm"] = "Are you sure you would like to delete your account?",
-        class = "input btn-danger width-100",
-      }, "Delete Account")
     end)
     div({
-      class = "settings__password grid justify-center gap-s",
+      class = "settings__password grid gap-s",
     }, function()
-      h2("Password")
+      h2({ class = "justify-self-center" }, "Password")
       if self.password_errors and next(self.password_errors) ~= nil then
         div({
           class = "password-errors",
@@ -182,5 +175,12 @@ return Widget:extend(function(self)
         end)
       end)
     end)
+    button({
+      ["hx-delete"] = self:url_for("delete_account"),
+      ["hx-target"] = "body",
+      ["hx-push-url"] = self:url_for("index"),
+      ["hx-confirm"] = "Are you sure you would like to delete your account?",
+      class = "input btn-danger width-100",
+    }, "Delete Account")
   end)
 end)
