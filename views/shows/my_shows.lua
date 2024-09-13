@@ -7,17 +7,36 @@ return Widget:extend(function(self)
     h1("My Show List")
     if type(self.shows) == "table" then
       if #self.shows ~= 0 then
-        form({ action = self:url_for("shows"), method = "get", class = "flex-center flex-wrap gap-s" }, function()
+        form({
+          id = "shows-sort",
+          action = self:url_for("shows"),
+          method = "get",
+          class = "flex-center flex-wrap gap-s",
+        }, function()
           label({ class = "flex align-center gap-xs" }, function()
             text("Sort:")
-            element("select", { id = "sort", name = "sort", class = "input" }, function()
-              option({ value = "nil" }, "")
-              option({ value = "newest" }, "Newest")
-              option({ value = "oldest" }, "Oldest")
-              option({ value = "watched" }, "Watched")
-              option({ value = "not_watched" }, "Not Watched")
-              option({ value = "a_z" }, "A - Z")
-              option({ value = "z_a" }, "Z - A")
+            element("select", {
+              id = "sort",
+              name = "sort",
+              class = "input",
+              _ = [[
+                on load
+                set query to document.URL.split('?')[1]
+                set param to query.split('=')[1]
+                for x in <#sort-option />  
+                  if x.value == param then
+                    add @selected to x
+                  end
+                end
+              ]],
+            }, function()
+              option({ id = "sort-option", value = "", hidden = true })
+              option({ id = "sort-option", value = "newest" }, "Newest")
+              option({ id = "sort-option", value = "oldest" }, "Oldest")
+              option({ id = "sort-option", value = "watched" }, "Watched")
+              option({ id = "sort-option", value = "not_watched" }, "Not Watched")
+              option({ id = "sort-option", value = "a_z" }, "A - Z")
+              option({ id = "sort-option", value = "z_a" }, "Z - A")
             end)
           end)
           button({ class = "input btn" }, "Submit")

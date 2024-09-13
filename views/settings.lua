@@ -1,8 +1,6 @@
 ---@type Widget
 local Widget = require("lapis.html").Widget
 
-local interp = require("misc.interp")
-
 return Widget:extend(function(self)
   div({ class = "settings flex-col gap-m height-max" }, function()
     div({ class = "settings__general grid gap-s" }, function()
@@ -29,23 +27,25 @@ return Widget:extend(function(self)
         label({
           ["for"] = "username",
         }, "Username:")
-        local username = self.user.username
         input({
           id = "username",
           name = "username",
-          _ = interp([[on load set my @value to "{{username}}" then add @disabled to me]]),
+          value = self.user.username,
+          disabled = true,
           class = "input",
+          _ = "on input set my value to my value.trim()",
           required = true,
         })
         label({
           ["for"] = "email",
         }, "Email:")
-        local email = self.user.email
         input({
           id = "email",
           name = "email",
-          _ = interp([[on load set my @value to "{{email}}" then add @disabled to me]]),
+          disabled = true,
+          value = self.user.email,
           class = "input",
+          _ = "on input set my value to my value.trim()",
           required = true,
         })
         button({
@@ -123,6 +123,7 @@ return Widget:extend(function(self)
           id = "current-password",
           class = "input",
           required = true,
+          _ = "on input set my value to my value.trim()",
         })
         label({
           ["for"] = "new-password",
@@ -133,6 +134,7 @@ return Widget:extend(function(self)
           id = "new-password",
           class = "input",
           required = true,
+          _ = "on input set my value to my value.trim()",
         })
         label({
           ["for"] = "confirm-new-password",
@@ -143,6 +145,7 @@ return Widget:extend(function(self)
           id = "confirm-new-password",
           class = "input",
           required = true,
+          _ = "on input set my value to my value.trim()",
         })
         div({ class = "show-password flex align-center gap-xs" }, function()
           label({ ["for"] = "show-password-check" }, "Show Password")

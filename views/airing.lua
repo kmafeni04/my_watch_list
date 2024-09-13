@@ -24,8 +24,23 @@ return Widget:extend(function(self)
       end)
       label({ ["for"] = "country", class = "flex-center gap-xs" }, function()
         text("Country:")
-        element("select", { name = "country", id = "country", class = "input" }, function()
-          option({ value = self.params.country, hidden = true })
+        element("select", {
+          name = "country",
+          id = "country",
+          class = "input",
+          _ = [[
+                on load
+                set queries to document.URL.split('?')[1]
+                set query to queries.split('&')[1]
+                set param to query.split('=')[1]
+                for x in <option />  
+                  if x.value == param then
+                    add @selected to x
+                  end
+                end
+              ]],
+        }, function()
+          option({ value = "", hidden = true })
           option({ value = "AF" }, "Afghanistan")
           option({ value = "AL" }, "Albania")
           option({ value = "DZ" }, "Algeria")

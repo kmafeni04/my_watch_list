@@ -110,7 +110,6 @@ return Widget:extend(function(self)
             set text to my innerHTML
             if text.length > desired_length 
               set my innerHTML to text.substring(0, desired_length).trim() + '...'
-              console.log(my innerHTML)
             end
           ]],
           }, function()
