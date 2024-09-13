@@ -10,16 +10,6 @@ return Widget:extend(function(self)
       end
     end)
   end
-  script({ type = "text/hyperscript" }, function()
-    raw([[
-    def trim(val)
-      set text to val
-      set no_space to text.trim().replace(' ','')
-      set val to no_space
-      return val
-    end
-    ]])
-  end)
   form({
     class = "user-form grid gap-xs",
     action = self:url_for("signup"),
@@ -40,7 +30,7 @@ return Widget:extend(function(self)
       ["data-validate"] = true,
       _ = [[
           on input
-          set my value to trim(my.value)
+          set my value to my value.trim()
         ]],
     })
     label({ ["for"] = "email" }, "Email:")
@@ -54,7 +44,7 @@ return Widget:extend(function(self)
       ["data-validate"] = true,
       _ = [[
           on input
-          set my value to trim(my.value)
+          set my value to my value.trim()
         ]],
     })
     label({ ["for"] = "password" }, "Password:")
@@ -70,7 +60,7 @@ return Widget:extend(function(self)
       ["data-validate"] = true,
       _ = [[
           on input
-          set my value to trim(my.value)
+          set my value to my value.trim()
         ]],
     })
     label({ ["for"] = "confirm_password" }, "Confirm password:")
@@ -86,7 +76,7 @@ return Widget:extend(function(self)
       ["data-validate"] = true,
       _ = [[
           on input
-          set my value to trim(my.value)
+          set my value to my value.trim()
         ]],
     })
     div({ class = "show-password flex align-center gap-xs" }, function()
