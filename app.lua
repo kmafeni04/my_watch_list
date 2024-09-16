@@ -8,6 +8,20 @@ local generic_controller = require("controllers.generic_controller")
 local shows_controller = require("controllers.shows_controller")
 local user_controller = require("controllers.user_controller")
 
+-- Set cookie attributes
+local date = require("date")
+app.cookie_attributes = function()
+  local expires = date(true):adddays(14):fmt("${http}")
+  return "Expires=" .. expires .. "; Path=/; HttpOnly"
+end
+
+-- Sets current user if cookie is valid
+app:before_filter(function(self)
+  if self.cookies.remember_me then
+    self.session.current_user = self.cookies.remember_me
+  end
+end)
+
 --- CSRF widget
 app:before_filter(function(self)
   require("misc.csrf_widget")(self)

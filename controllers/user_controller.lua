@@ -42,6 +42,9 @@ return {
     local user = Users:find({ username = self.params.username })
     if user and verify(self.params.password, user.password) then
       self.session.current_user = self.params.username
+      if self.params.remember_me == "true" then
+        self.cookies.remember_me = user.username
+      end
       return { redirect_to = self:url_for("index") }
     else
       table.insert(self.errors, "Username or password is incorrect")

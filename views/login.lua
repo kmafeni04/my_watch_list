@@ -65,6 +65,16 @@ return Widget:extend(function(self)
           ]],
       })
     end)
+    div({ class = "flex align-center gap-xs" }, function()
+      label({ ["for"] = "remember-me" }, "Remember me:")
+      input({
+        type = "checkbox",
+        id = "remember-me",
+        value = "true",
+        name = "remember_me",
+        autocomplete = "off",
+      })
+    end)
     a({ href = self:url_for("forgot_password") }, "Forgot Password?")
     button({ class = "input btn" }, "Login")
     p({ class = "flex gap-xs" }, function()
