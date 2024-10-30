@@ -15,37 +15,31 @@ app.cookie_attributes = function()
   return "Expires=" .. expires .. "; Path=/; HttpOnly"
 end
 
--- Sets current user if cookie is valid
 app:before_filter(function(self)
+  -- Sets current user if cookie is valid
   if self.cookies.remember_me then
     self.session.current_user = self.cookies.remember_me
   end
-end)
 
---- CSRF widget
-app:before_filter(function(self)
+  --- CSRF widget
   require("misc.csrf_widget")(self)
-end)
 
--- User not logged in
-app:before_filter(function(self)
-  local protected_routes = {
+  -- User not logged in
+  local not_logged_in_routes = {
     [self:url_for("settings")] = true,
     [self:url_for("shows")] = true,
   }
-  if not self.session.current_user and protected_routes[self.req.parsed_url.path] then
+  if not self.session.current_user and not_logged_in_routes[self.req.parsed_url.path] then
     self:write({ redirect_to = self:url_for("login") })
   end
-end)
 
--- User logged in
-app:before_filter(function(self)
-  local protected_routes = {
+  -- User logged in
+  local logged_in_routes = {
     [self:url_for("login")] = true,
     [self:url_for("signup")] = true,
     [self:url_for("forgot_password")] = true,
   }
-  if self.session.current_user and protected_routes[self.req.parsed_url.path] then
+  if self.session.current_user and logged_in_routes[self.req.parsed_url.path] then
     self:write({ redirect_to = self:url_for("index") })
   end
 end)
